@@ -4,11 +4,16 @@ import { RouteManager } from './manager';
 
 import { HelpRoute } from './help';
 import { RawRoute } from './raw';
+import { CodeRoute } from './code';
 
 export class Router {
   readonly manager: RouteManager;
 
   constructor(chat: Chat) {
-    this.manager = new RouteManager(new RawRoute(chat), new HelpRoute(chat));
+    this.manager = new RouteManager(
+      new RawRoute(chat),
+      new HelpRoute(chat),
+      new CodeRoute(chat)
+    );
   }
 }
