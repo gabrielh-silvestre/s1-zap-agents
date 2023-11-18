@@ -1,16 +1,17 @@
-import { openai } from '../gpt';
 import { Chat, Message } from 'whatsapp-web.js';
+import { Agent } from '../openai/agent';
 
 export abstract class RouteBase {
   readonly command: string;
 
   readonly chat: Chat;
 
-  protected readonly openai = openai;
+  protected readonly agent: Agent;
 
-  constructor(command: string, chat: Chat) {
+  constructor(command: string, chat: Chat, agent: Agent) {
     this.command = '/gpt'.concat(`.${command}`);
     this.chat = chat;
+    this.agent = agent;
   }
 
   private shouldExecute(message: Message): boolean {
@@ -25,19 +26,8 @@ export abstract class RouteBase {
     return null;
   }
 
-  protected async sendToGPT(
-    message: string,
-    prompt: string = ''
-  ): Promise<string | null> {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4-1106-preview',
-      messages: [
-        { role: 'system', content: prompt },
-        { role: 'user', content: message },
-      ],
-    });
-
-    return completion.choices[0].message?.content;
+  protected async sendToGPT(message: string): Promise<string | null> {
+    return await this.agent.complet(message);
   }
 
   async execute(message: Message): Promise<boolean> {
