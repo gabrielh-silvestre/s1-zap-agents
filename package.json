@@ -1,6 +1,6 @@
 {
   "name": "cheap-gpt",
-  "module": "index.ts",
+  "module": "src/main.ts",
   "type": "module",
   "devDependencies": {
     "@types/qrcode-terminal": "^0.12.2",

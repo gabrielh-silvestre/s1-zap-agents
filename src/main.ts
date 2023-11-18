@@ -1,7 +1,7 @@
 import { Client, LocalAuth, Chat } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
-import { chat } from './gpt';
+import { Router } from './routes';
 
 const CHAT_ID = process.env.CHAT_ID as string;
 
@@ -47,12 +47,11 @@ client.on('ready', async () => {
 client.on('message_create', async (msg) => {
   console.log('MESSAGE');
 
-  // Message should start with /gpt
-  const shouldReply = msg.body.startsWith('/gpt');
-  if (!shouldReply) return;
+  await new Router(pvChat).manager.message(msg);
+});
 
-  const message = msg.body.replace('/gpt', '').trim();
-  const gptResponse = await chat(message);
-
-  pvChat?.sendMessage(gptResponse?.content ?? 'No response');
+process.on('SIGINT', async () => {
+  console.log('(SIGINT) Shutting down...');
+  await client.destroy();
+  process.exit(0);
 });
