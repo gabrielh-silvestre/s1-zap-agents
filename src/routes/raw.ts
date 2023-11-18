@@ -8,7 +8,6 @@ export class RawRoute extends RouteBase {
   }
 
   async answer(msg: string): Promise<string | null> {
-    console.log('RAW', msg);
     return await this.sendToGPT(msg);
   }
 }

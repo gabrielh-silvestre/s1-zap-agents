@@ -16,6 +16,8 @@ export const client = new Client({
 
   authStrategy: new LocalAuth(),
 });
+
+console.log('Starting...');
 client.initialize();
 
 client.on('qr', (qr) => {
@@ -23,19 +25,11 @@ client.on('qr', (qr) => {
 });
 
 client.on('authenticated', (session) => {
-  console.log('AUTHENTICATED', session);
-
-  if (session) {
-    Bun.write('./session.json', JSON.stringify(session, null, 2)).catch(
-      (err) => {
-        console.error('Error while save session', err);
-      }
-    );
-  }
+  console.log('AUTHENTICATED');
 });
 
-client.on('auth_failure', (session) => {
-  console.log('AUTHENTICATION FAILURE', session);
+client.on('auth_failure', () => {
+  console.log('AUTHENTICATION FAILURE');
 });
 
 client.on('ready', async () => {
@@ -45,8 +39,6 @@ client.on('ready', async () => {
 });
 
 client.on('message_create', async (msg) => {
-  console.log('MESSAGE');
-
   await new Router(pvChat).manager.message(msg);
 });
 

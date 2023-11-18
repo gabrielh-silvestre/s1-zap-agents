@@ -7,7 +7,6 @@ export class HelpRoute extends RouteBase {
   }
 
   async answer(): Promise<string | null> {
-    console.log('HELP');
     return 'Available commands: /gpt.raw, /gpt.help';
   }
 }
