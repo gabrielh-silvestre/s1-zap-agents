@@ -13,11 +13,11 @@ export class Router {
 
   constructor(chat: Chat) {
     this.manager = new RouteManager(
-      new RawRoute(chat),
       new HelpRoute(chat),
       new CodeRoute(chat),
       new AudioRoute(chat),
-      new SpeechRoute(chat)
+      new SpeechRoute(chat),
+      new RawRoute(chat)
     );
   }
 }

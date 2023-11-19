@@ -8,13 +8,16 @@ export abstract class RouteBase {
 
   readonly chat: Chat;
 
-  name: string = this.command ?? 'BASE';
+  name: string = 'BASE';
 
   constructor(chat: Chat, agent: Agent, command: string | null = null) {
     this.chat = chat;
     this.agent = agent;
 
-    if (command !== null) this.command = `/gpt${command}`;
+    if (command !== null) {
+      this.command = `/gpt${command}`;
+      this.name = this.command;
+    }
   }
 
   protected shouldExecute(message: Message): boolean {
