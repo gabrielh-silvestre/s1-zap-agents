@@ -1,10 +1,11 @@
 import { Mock, beforeEach, describe, expect, it, mock, spyOn } from 'bun:test';
 import { BaseHandler } from '../../../src/handlers';
 import { mockWppChat, mockWppMessage } from '../../mocks';
+import { Message } from 'whatsapp-web.js';
 
 export class BaseHandlerImp extends BaseHandler {
-  constructor(command: string | null = null) {
-    super(command);
+  shouldExecute(msg: Message): boolean {
+    return this.matchCommand(msg);
   }
 }
 
@@ -18,7 +19,7 @@ describe('[Unit] Test for BaseHandler', () => {
     mockedChat = mockWppChat();
     mockedMessage = mockWppMessage();
 
-    handler = new BaseHandlerImp('.test-mock');
+    handler = new BaseHandlerImp({ command: '.test-mock' });
   });
 
   it('should be defined', () => {
@@ -26,42 +27,42 @@ describe('[Unit] Test for BaseHandler', () => {
   });
 
   describe('.shouldExecute', () => {
-    it('should throw error if command is not defined', async () => {
+    it('should throw error if command is not defined', () => {
       // Arrange
       handler = new BaseHandlerImp();
 
       // Act
-      const act = () => handler.execute(mockedMessage);
+      const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
       try {
-        await act();
+        act();
         expect().fail('Should throw error');
       } catch (error: any) {
         expect(error).toBeInstanceOf(Error);
       }
     });
 
-    it('should return false if message does not start with command', async () => {
+    it('should return false if message does not start with command', () => {
       // Arrange
-      handler = new BaseHandlerImp('FAIL');
+      handler = new BaseHandlerImp({ command: 'FAIL' });
 
       // Act
-      const act = () => handler.execute(mockedMessage);
+      const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(await act()).toBe(false);
+      expect(act()).toBe(false);
     });
 
-    it('should return true if message starts with command', async () => {
+    it('should return true if message starts with command', () => {
       // Arrange
       handler.answer = mock(async () => true);
 
       // Act
-      const act = () => handler.execute(mockedMessage);
+      const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(await act()).toBe(true);
+      expect(act()).toBe(true);
     });
   });
 
@@ -90,7 +91,7 @@ describe('[Unit] Test for BaseHandler', () => {
     let spyAnswer: Mock<any>;
 
     beforeEach(() => {
-      handler = new BaseHandlerImp('.test-mock');
+      handler = new BaseHandlerImp({ command: '.test-mock' });
 
       spyHandle = spyOn(handler, 'handle');
       spyAnswer = spyOn(handler, 'answer');
@@ -98,7 +99,7 @@ describe('[Unit] Test for BaseHandler', () => {
 
     it('should return false if shouldExecute returns false', async () => {
       // Arrange
-      handler = new BaseHandlerImp('FAIL');
+      handler = new BaseHandlerImp({ command: 'FAIL' });
 
       // Act
       const result = await handler.execute(mockedMessage);
@@ -126,8 +127,8 @@ describe('[Unit] Test for BaseHandler', () => {
       expect(mockedMessage.getChat).toHaveBeenCalled();
       expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
+      expect(spyHandle).toHaveBeenCalled();
       expect(handler.answer).toHaveBeenCalled();
-      expect(spyHandle).not.toHaveBeenCalled();
     });
 
     it('should return false if handle returns false', async () => {
@@ -143,8 +144,8 @@ describe('[Unit] Test for BaseHandler', () => {
       expect(mockedMessage.getChat).toHaveBeenCalled();
       expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
-      expect(spyAnswer).toHaveBeenCalled();
       expect(handler.handle).toHaveBeenCalled();
+      expect(spyAnswer).not.toHaveBeenCalled();
     });
 
     it('should return null if message is not handled or answered', async () => {
@@ -157,8 +158,8 @@ describe('[Unit] Test for BaseHandler', () => {
       expect(mockedMessage.getChat).toHaveBeenCalled();
       expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
-      expect(spyAnswer).toHaveBeenCalled();
       expect(spyHandle).toHaveBeenCalled();
+      expect(spyAnswer).toHaveBeenCalled();
     });
   });
 });

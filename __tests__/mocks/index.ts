@@ -14,6 +14,6 @@ export const mockWppChat = () =>
 
 export const mockWppMessage = () =>
   ({
-    body: '/gpt.test-mock MOCKED',
+    body: '.test-mock MOCKED',
     getChat: mock(async () => mockWppChat()),
   } as unknown as Message);

@@ -16,11 +16,12 @@ export class TracribeHandler extends BaseHandler {
     try {
       const quote = await msg.getQuotedMessage();
       const audio = await quote.downloadMedia();
+      const buffer = Buffer.from(audio.data, 'base64');
 
-      const response = await this.agent?.transcriptAudio(audio.data);
+      const response = await this.agent?.transcriptAudio(buffer);
       if (!response) return false;
 
-      await msg.reply(response.text);
+      await msg.reply(response);
 
       return true;
     } catch (error: any) {

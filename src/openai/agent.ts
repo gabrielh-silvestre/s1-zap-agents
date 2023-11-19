@@ -3,7 +3,9 @@ import { OpenAI, toFile } from 'openai';
 import { sleep } from 'openai/core.mjs';
 import { Run } from 'openai/resources/beta/threads/runs/runs.mjs';
 
-export class Agent {
+import { IAgent } from '../types/agent';
+
+export class Agent implements IAgent {
   protected readonly agentId: string;
 
   openai: OpenAI;
@@ -36,15 +38,14 @@ export class Agent {
     return response;
   }
 
-  private async transformAudiOggToBlob(media: string) {
-    const buffer = Buffer.from(media, 'base64');
+  private async transformAudiOggToBlob(buffer: Buffer) {
     const dataUrl = `data:audio/ogg;base64,${buffer.toString('base64')}`;
 
     const response = await fetch(dataUrl);
     return await response.blob();
   }
 
-  async transcriptAudio(media: string) {
+  async transcriptAudio(media: Buffer) {
     const blob = await this.transformAudiOggToBlob(media);
     const file = await toFile(blob, 'audio.ogg', { type: 'audio/ogg' });
 
@@ -54,7 +55,7 @@ export class Agent {
       temperature: 0.6,
     });
 
-    return transcription;
+    return transcription.text;
   }
 
   async transcriptText(text: string) {
@@ -65,7 +66,7 @@ export class Agent {
       response_format: 'opus',
     });
 
-    return response;
+    return response.arrayBuffer();
   }
 
   async createAndRunThread(content: string) {

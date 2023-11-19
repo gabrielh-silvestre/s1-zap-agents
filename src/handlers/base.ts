@@ -1,11 +1,12 @@
 import { Chat, Message } from 'whatsapp-web.js';
 import { HandlerOpts } from '../types/handlers';
-import { Agent } from '../openai/agent';
+
+import { IAgent } from '../types/agent';
 
 export abstract class BaseHandler {
   protected command: string | null = null;
 
-  protected agent: Agent | null = null;
+  protected agent: IAgent | null = null;
 
   name: string = 'BASE';
 

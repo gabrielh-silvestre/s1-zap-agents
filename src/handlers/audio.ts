@@ -19,13 +19,12 @@ export class AudioHandler extends BaseHandler {
   async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
       const media = await msg.downloadMedia();
+      const buffer = Buffer.from(media.data, 'base64');
 
-      const transcription = await this.agent?.transcriptAudio(media.data);
+      const transcription = await this.agent?.transcriptAudio(buffer);
       if (!transcription) return false;
 
-      // console.log(transcription.text);
-
-      const response = await this.agent?.complet(transcription.text);
+      const response = await this.agent?.complet(transcription);
       if (!response) return false;
 
       await msg.reply(response);
