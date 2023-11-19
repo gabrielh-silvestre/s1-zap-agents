@@ -9,13 +9,6 @@
     "declaration": true,
     "moduleResolution": "Node",
     "moduleDetection": "force",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "composite": true,
-    "strict": true,
-    "downlevelIteration": true,
-    "skipLibCheck": true,
-    "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
@@ -23,5 +16,5 @@
     ]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "rollup.config.js"]
+  "exclude": ["node_modules", "dist", "rollup.config.cjs"]
 }
