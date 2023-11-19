@@ -1,5 +1,19 @@
 # S1-Agent
 
+## Install
+
+```bash
+bun add s1-agents
+```
+
+```bash
+npm i s1-agents
+```
+
+```bash
+yarn add s1-agents
+```
+
 ## Local Setup
 
 ### Docker
