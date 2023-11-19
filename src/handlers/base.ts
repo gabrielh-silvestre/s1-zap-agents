@@ -59,6 +59,6 @@ export abstract class BaseHandler {
       return false;
     }
 
-    return true;
+    return response;
   }
 }
