@@ -14,7 +14,7 @@ export abstract class RouteBase {
     this.agent = agent;
   }
 
-  private shouldExecute(message: Message): boolean {
+  protected shouldExecute(message: Message): boolean {
     return message.body.startsWith(this.command);
   }
 

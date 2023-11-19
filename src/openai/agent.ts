@@ -57,6 +57,17 @@ export class Agent {
     return transcription;
   }
 
+  async transcriptText(text: string) {
+    const response = await this.openai.audio.speech.create({
+      model: 'tts-1',
+      input: text,
+      voice: 'alloy',
+      response_format: 'opus',
+    });
+
+    return response;
+  }
+
   async createAndRunThread(content: string) {
     return await this.openai.beta.threads.createAndRun({
       assistant_id: this.agentId,

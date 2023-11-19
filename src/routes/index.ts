@@ -5,6 +5,7 @@ import { RouteManager } from './manager';
 import { HelpRoute } from './help';
 import { RawRoute } from './raw';
 import { CodeRoute } from './code';
+import { AudioRoute } from './audio';
 import { SpeechRoute } from './speech';
 
 export class Router {
@@ -15,6 +16,7 @@ export class Router {
       new RawRoute(chat),
       new HelpRoute(chat),
       new CodeRoute(chat),
+      new AudioRoute(chat),
       new SpeechRoute(chat)
     );
   }

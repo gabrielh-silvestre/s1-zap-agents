@@ -1,4 +1,4 @@
-import { Chat, Message } from 'whatsapp-web.js';
+import { Chat, Message, MessageMedia } from 'whatsapp-web.js';
 
 import { RouteBase } from './base';
 import { Agent } from '../openai/agent';
@@ -6,24 +6,28 @@ import { AgentEnum } from '../utils';
 
 export class SpeechRoute extends RouteBase {
   constructor(chat: Chat) {
-    super('speech', chat, new Agent(AgentEnum.raw));
+    super('speech', chat, new Agent(AgentEnum.audio));
   }
 
-  transformAudiOggToBlob(media: string) {
-    const base64Data = media.replace(/^data:audio\/ogg;base64,/, '');
-    const blob = Buffer.from(base64Data, 'base64');
+  private async toBase64(response: string): Promise<string> {
+    const audio = await this.agent.transcriptText(response);
+    const arrayBuffer = await audio.arrayBuffer();
 
-    return blob;
+    return Buffer.from(arrayBuffer).toString('base64');
   }
 
   async handle(msg: Message): Promise<string | null> {
     try {
-      const media = await msg.downloadMedia();
-      const { text } = await this.agent.transcriptAudio(media.data);
+      const response = await this.sendToGPT(msg.body);
+      if (!response) return null;
 
-      return await this.sendToGPT(text);
+      const base64 = await this.toBase64(response);
+      const msgMedia = new MessageMedia('audio/ogg', base64);
+
+      await msg.reply(msgMedia);
+      return '🤠';
     } catch (error: any) {
-      console.error(error);
+      console.log(error);
       return null;
     }
   }
