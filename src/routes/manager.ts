@@ -15,8 +15,13 @@ export class RouteManager {
         if (!msg.fromMe) return; // Only handle messages from the "host" account
 
         for (const handler of handlers) {
-          const executed = await handler.execute(msg);
-          if (executed) break;
+          const shouldExecute = handler.shouldExecute(msg);
+          if (shouldExecute) {
+            console.log(`Executing ${handler.name} handler`)
+
+            await handler.execute(msg);
+            break;
+          }
         }
       });
     }

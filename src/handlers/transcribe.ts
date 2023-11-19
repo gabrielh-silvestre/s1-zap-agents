@@ -1,9 +1,8 @@
-import { Chat, Message, MessageMedia } from 'whatsapp-web.js';
+import { Chat, Message } from 'whatsapp-web.js';
 
-import { BaseHandler } from './base';
-import { Response } from 'openai/core.mjs';
+import { BaseHandler } from '.';
 
-export class SpeechHandler extends BaseHandler {
+export class TranscribeHandler extends BaseHandler {
   shouldExecute(msg: Message): boolean {
     if (!msg.fromMe) return false;
 
@@ -16,14 +15,14 @@ export class SpeechHandler extends BaseHandler {
   async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
       const quote = await msg.getQuotedMessage();
+      const audio = await quote.downloadMedia();
+      const buffer = Buffer.from(audio.data, 'base64');
 
-      const response = await this.agent?.transcriptText(quote.body);
+      const response = await this.agent?.transcriptAudio(buffer);
       if (!response) return false;
 
-      const base64 = Buffer.from(response).toString('base64');
-      const msgMedia = new MessageMedia('audio/ogg', base64);
+      await msg.reply(response);
 
-      await msg.reply(msgMedia);
       return true;
     } catch (error: any) {
       console.error(error);

@@ -1,28 +1,33 @@
 import { Chat, Message } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
-import { Agent } from '../openai/agent';
 
 export class AudioHandler extends BaseHandler {
   name = 'AudioRoute';
 
-  constructor(public agent: Agent) {
-    super();
+  shouldExecute(message: Message): boolean {
+    if (!message.fromMe) return false;
+
+    const canExecute = this.matchCommand(message) && this.isAudio(message);
+    return canExecute;
   }
 
-  protected shouldExecute(message: Message): boolean {
-    return message.hasMedia && message.type === 'ptt' && !message.hasQuotedMsg;
+  protected isAudio(msg: Message): boolean {
+    return msg.hasMedia && msg.type === 'ptt';
   }
 
-  async handle(chat: Chat, msg: Message): Promise<boolean | null> {
+  async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
       const media = await msg.downloadMedia();
-      const { text } = await this.agent.transcriptAudio(media.data);
+      const buffer = Buffer.from(media.data, 'base64');
 
-      const response = await this.agent.complet(text);
+      const transcription = await this.agent?.transcriptAudio(buffer);
+      if (!transcription) return false;
+
+      const response = await this.agent?.complet(transcription);
       if (!response) return false;
 
-      await chat.sendMessage(response);
+      await msg.reply(response);
 
       return true;
     } catch (error: any) {

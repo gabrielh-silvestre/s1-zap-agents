@@ -1,24 +1,38 @@
 import { Chat, Message } from 'whatsapp-web.js';
+import { HandlerOpts } from '../types/handlers';
+
+import { IAgent } from '../types/agent';
 
 export abstract class BaseHandler {
   protected command: string | null = null;
 
+  protected agent: IAgent | null = null;
+
   name: string = 'BASE';
 
-  constructor(command: string | null = null) {
-    if (command !== null) {
-      this.command = `/gpt${command}`;
-      this.name = this.command;
+  constructor(
+    { agent = null, command = null }: HandlerOpts = {
+      agent: null,
+      command: null,
+    }
+  ) {
+    this.agent = agent ?? null;
+
+    const isCommandString = typeof command === 'string';
+    if (isCommandString) {
+      this.command = command;
+      this.name = command ?? this.name;
     }
   }
 
-  protected shouldExecute(message: Message): boolean {
-    if (!this.command) {
-      throw new Error('Command not defined and shouldExecute not overrided');
-    }
+  protected matchCommand(msg: Message): boolean {
+    if (!this.command) return true;
 
-    return message.body.startsWith(this.command);
+    const isCommandString = typeof this.command === 'string';
+    return isCommandString ? msg.body.startsWith(this.command) : false;
   }
+
+  abstract shouldExecute(msg: Message): boolean;
 
   async answer(chat: Chat, msg: string): Promise<boolean | null> {
     return null;
@@ -29,20 +43,16 @@ export abstract class BaseHandler {
   }
 
   async execute(message: Message): Promise<boolean> {
-    const shouldReply = this.shouldExecute(message);
-    if (!shouldReply) return false;
-
-    console.log(`Executing ${this.name} handler`);
-
-    const content = this.command
-      ? message.body.replace(this.command, '').trim()
-      : message.body;
+    const content =
+      message.body && this.command
+        ? message.body.replace(this.command, '').trim()
+        : message.body;
 
     const chat = await message.getChat();
 
     let response: boolean | null = null;
-    response ??= await this.answer(chat, content);
     response ??= await this.handle(chat, message);
+    response ??= await this.answer(chat, content);
 
     if (response === null) {
       await chat.sendMessage('No response, unexpected error');
