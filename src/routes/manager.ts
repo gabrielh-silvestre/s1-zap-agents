@@ -1,25 +1,22 @@
-import { Message } from 'whatsapp-web.js';
+import { Events, Client } from 'whatsapp-web.js';
 import { BaseHandler } from '../handlers/base';
 
 export class RouteManager {
-  handlers: BaseHandler[];
+  hub: Map<Events, Set<BaseHandler>>;
 
-  constructor(...handlers: BaseHandler[]) {
-    this.handlers = handlers;
+  client: Client;
+
+  constructor(hub: Map<Events, Set<BaseHandler>>, client: Client) {
+    this.hub = hub;
+    this.client = client;
+
+    this.hub.forEach((handlers, event) => {
+      client.on(event, async (msg) => {
+        for (const handler of handlers) {
+          const executed = await handler.execute(msg);
+          if (executed) break;
+        }
+      });
+    });
   }
-
-  async message(messsage: Message) {
-    for (const route of this.handlers) {
-      const executed = await route.execute(messsage);
-
-      if (executed) {
-        console.log(route.name);
-        break;
-      }
-    }
-  }
-}
-
-export function createRouteManager(...handlers: (typeof BaseHandler)[]) {
-  return new RouteManager(...handlers.map((handler: any) => new handler()));
 }

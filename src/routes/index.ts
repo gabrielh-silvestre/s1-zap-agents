@@ -1,17 +1,25 @@
-import { createRouteManager } from './manager';
+import { Client, Events } from 'whatsapp-web.js';
 
-import {
-  AudioHandler,
-  CodeHandler,
-  HelpHandler,
-  SpeechHandler,
-} from '../handlers';
-import { RootHandler } from '../handlers/root';
+import { BaseHandler } from '../handlers';
+import { RouteManagerFactoryOpt } from '../types';
+import { RouteManager } from './manager';
 
-export const router = createRouteManager(
-  HelpHandler,
-  AudioHandler,
-  CodeHandler,
-  SpeechHandler,
-  RootHandler
-);
+export function routerManagerFactory(
+  client: Client,
+  opts: RouteManagerFactoryOpt[]
+) {
+  const hub = new Map<Events, Set<BaseHandler>>();
+
+  for (const opt of opts) {
+    const { handlers, event } = opt;
+    const route = handlers.map((h: any) => new h());
+
+    if (!hub.has(event)) hub.set(event, new Set());
+
+    for (const handler of route) {
+      hub.get(event)?.add(handler);
+    }
+  }
+
+  return new RouteManager(hub, client);
+}

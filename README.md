@@ -9,3 +9,7 @@ docker build --build-arg OPENAI_API_KEY=$OPENAI_API_KEY \
              --build-arg OPENAI_AUDIO_AGENT=<your_agent_id> \
              -t cheap-gpt:latest .
 ```
+
+```bash
+docker run -it --rm cheap-gpt:latest
+```

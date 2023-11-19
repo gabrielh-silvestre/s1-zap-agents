@@ -1,11 +1,14 @@
-import { Client, LocalAuth, Chat } from 'whatsapp-web.js';
+import { Client, LocalAuth, Events } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
-import { router } from './routes';
-
-const CHAT_ID = process.env.CHAT_ID as string;
-
-let pvChat: Chat;
+import { routerManagerFactory } from './routes';
+import {
+  HelpHandler,
+  AudioHandler,
+  CodeHandler,
+  SpeechHandler,
+} from './handlers';
+import { RootHandler } from './handlers/root';
 
 export const client = new Client({
   puppeteer: {
@@ -16,6 +19,19 @@ export const client = new Client({
 
   authStrategy: new LocalAuth(),
 });
+
+routerManagerFactory(client, [
+  {
+    event: Events.MESSAGE_CREATE,
+    handlers: [
+      HelpHandler,
+      AudioHandler,
+      CodeHandler,
+      SpeechHandler,
+      RootHandler,
+    ],
+  },
+]);
 
 console.log('Starting...');
 client.initialize();
@@ -34,13 +50,6 @@ client.on('auth_failure', () => {
 
 client.on('ready', async () => {
   console.log('READY');
-});
-
-client.on('message_create', async (msg) => {
-  // IMPORTANT Only answer "self" messages
-  if (!msg.fromMe) return;
-
-  await router.message(msg);
 });
 
 process.on('SIGINT', async () => {
