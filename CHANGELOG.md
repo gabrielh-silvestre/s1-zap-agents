@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.0...v1.1.1) (2023-11-19)
+
+
+### Bug Fixes
+
+* adjust publish flux ([07dadc4](https://github.com/gabrielh-silvestre/s1-agents/commit/07dadc4427b0f9e35b3a4698e0d2ca8717612d87))
+* setup rollup ([751f0d7](https://github.com/gabrielh-silvestre/s1-agents/commit/751f0d72dd53e8abc69b6a37d0936fdb47c2f619))
+
 ## [1.1.0](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.0.0...v1.1.0) (2023-11-19)
 
 
