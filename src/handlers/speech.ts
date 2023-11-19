@@ -1,15 +1,21 @@
 import { Chat, Message, MessageMedia } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
-import { Agent } from '../openai/agent';
 
 export class SpeechHandler extends BaseHandler {
-  constructor(public agent: Agent) {
-    super('.speech');
+  shouldExecute(msg: Message): boolean {
+    if (!msg.fromMe) return false;
+
+    const canExecute =
+      this.matchCommand(msg) &&
+      (msg.hasMedia || msg.hasQuotedMsg || msg.type === 'chat');
+    return canExecute;
   }
 
   private async toBase64(response: string): Promise<string> {
-    const audio = await this.agent.transcriptText(response);
+    const audio = await this.agent?.transcriptText(response);
+    if (!audio) throw new Error('Failed to generate audio');
+
     const arrayBuffer = await audio.arrayBuffer();
 
     return Buffer.from(arrayBuffer).toString('base64');
@@ -17,7 +23,9 @@ export class SpeechHandler extends BaseHandler {
 
   async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
-      const response = await this.agent.complet(msg.body);
+      const quote = await msg.getQuotedMessage();
+
+      const response = await this.agent?.complet(quote.body);
       if (!response) return false;
 
       const base64 = await this.toBase64(response);

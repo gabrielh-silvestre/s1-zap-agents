@@ -1,24 +1,33 @@
 import { Chat, Message } from 'whatsapp-web.js';
+import { HandlerOpts } from '../types/handlers';
+import { Agent } from '../openai/agent';
 
 export abstract class BaseHandler {
   protected command: string | null = null;
 
+  protected agent: Agent | null = null;
+
   name: string = 'BASE';
 
-  constructor(command: string | null = null) {
-    if (command !== null) {
-      this.command = `/gpt${command}`;
-      this.name = this.command;
+  constructor(opts: HandlerOpts = { agent: null, command: null }) {
+    this.agent = opts.agent ?? null;
+
+    const isCommandString = typeof opts.command === 'string';
+
+    if (isCommandString) {
+      this.command = opts.command ?? null;
+      this.name = opts.command ?? this.name;
     }
   }
 
-  protected shouldExecute(message: Message): boolean {
-    if (!this.command) {
-      throw new Error('Command not defined and shouldExecute not overrided');
-    }
+  protected matchCommand(msg: Message): boolean {
+    if (!this.command) return true;
 
-    return message.body.startsWith(this.command);
+    const isCommandString = typeof this.command === 'string';
+    return isCommandString ? msg.body.startsWith(this.command) : false;
   }
+
+  abstract shouldExecute(msg: Message): boolean;
 
   async answer(chat: Chat, msg: string): Promise<boolean | null> {
     return null;
@@ -41,8 +50,8 @@ export abstract class BaseHandler {
     const chat = await message.getChat();
 
     let response: boolean | null = null;
-    response ??= await this.answer(chat, content);
     response ??= await this.handle(chat, message);
+    response ??= await this.answer(chat, content);
 
     if (response === null) {
       await chat.sendMessage('No response, unexpected error');

@@ -3,12 +3,11 @@ import qrcode from 'qrcode-terminal';
 
 import { routerManagerFactory } from './routes';
 import {
-  HelpHandler,
   AudioHandler,
-  CodeHandler,
   SpeechHandler,
+  TextHandler,
+  TracribeHandler,
 } from './handlers';
-import { RootHandler } from './handlers/root';
 import { Agent } from './openai/agent';
 import { AgentEnum } from './utils';
 
@@ -26,11 +25,22 @@ routerManagerFactory(client, [
   {
     event: Events.MESSAGE_CREATE,
     handlers: [
-      { handler: HelpHandler },
-      { handler: AudioHandler, agent: new Agent(AgentEnum.audio) },
-      { handler: CodeHandler, agent: new Agent(AgentEnum.code) },
-      { handler: SpeechHandler, agent: new Agent(AgentEnum.audio) },
-      { handler: RootHandler, agent: new Agent(AgentEnum.raw) },
+      {
+        handler: TextHandler,
+        opts: { agent: new Agent(AgentEnum.code), command: '/gpt' },
+      },
+      {
+        handler: AudioHandler,
+        opts: { agent: new Agent(AgentEnum.audio) },
+      },
+      {
+        handler: SpeechHandler,
+        opts: { agent: new Agent(AgentEnum.audio), command: '--to-audio' },
+      },
+      {
+        handler: TracribeHandler,
+        opts: { agent: new Agent(AgentEnum.audio), command: '--to-text' },
+      },
     ],
   },
 ]);

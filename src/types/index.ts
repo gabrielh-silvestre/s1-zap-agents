@@ -1,19 +1,19 @@
 import { Events, Message } from 'whatsapp-web.js';
 
-import { Agent } from '../openai/agent';
+import { HandlerOpts } from './handlers';
 
 export type WppListener = (message: Message) => void;
 
-export type HandlerOpt = {
+export type RouteHandlerOpts = {
   /**
    * @description The handler class, must extends BaseHandler
    * @see BaseHandler
    */
   handler: any;
-  agent?: Agent;
+  opts?: HandlerOpts;
 };
 
 export type RouteManagerFactoryOpt = {
   event: Events;
-  handlers: HandlerOpt[];
+  handlers: RouteHandlerOpts[];
 };
