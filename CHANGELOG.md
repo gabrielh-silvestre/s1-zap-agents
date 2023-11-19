@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.0.0...v1.1.0) (2023-11-19)
+
+
+### Features
+
+* create more generic handlers ([b4d337c](https://github.com/gabrielh-silvestre/s1-agents/commit/b4d337c6661bef53c53e64f1bf7202497b036b41))
+* transform into lib ([e0b1d08](https://github.com/gabrielh-silvestre/s1-agents/commit/e0b1d0816cc91e8f9cc3c8ed053b010f3c3ec96e))
+
+
+### Bug Fixes
+
+* **AudioHandler:** adjust exec condition ([ba23d88](https://github.com/gabrielh-silvestre/s1-agents/commit/ba23d88b61f70a4dac0fd3b9442d6d94e6f71824))
+* import statements and update method signatures ([19131cd](https://github.com/gabrielh-silvestre/s1-agents/commit/19131cd4f20a185b254f996e37dabfa1aad37040))
+
 ## 1.0.0 (2023-11-19)
 
 
