@@ -3,15 +3,15 @@
 ## Install
 
 ```bash
-bun add s1-agents
+bun add s1-agents whatsapp-web.js
 ```
 
 ```bash
-npm i s1-agents
+npm i s1-agents whatsapp-web.js
 ```
 
 ```bash
-yarn add s1-agents
+yarn add s1-agents whatsapp-web.js
 ```
 
 ## Local Setup
