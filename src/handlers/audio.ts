@@ -1,27 +1,27 @@
 import { Chat, Message } from 'whatsapp-web.js';
 
-import { RouteBase } from './base';
+import { BaseHandler } from './base';
 import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
-export class AudioRoute extends RouteBase {
+export class AudioHandler extends BaseHandler {
   name = 'AudioRoute';
 
-  constructor(chat: Chat, agent = new Agent(AgentEnum.audio)) {
-    super(chat, agent);
+  constructor(agent = new Agent(AgentEnum.audio)) {
+    super(agent);
   }
 
   protected shouldExecute(message: Message): boolean {
     return message.hasMedia && !message.hasQuotedMsg;
   }
 
-  async handle(msg: Message): Promise<boolean | null> {
+  async handle(chat: Chat, msg: Message): Promise<boolean | null> {
     try {
       const media = await msg.downloadMedia();
       const { text } = await this.agent.transcriptAudio(media.data);
 
       const response = await this.sendToGPT(text);
-      await this.chat.sendMessage(response);
+      await chat.sendMessage(response);
 
       return true;
     } catch (error: any) {

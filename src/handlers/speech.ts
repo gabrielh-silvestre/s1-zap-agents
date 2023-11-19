@@ -1,12 +1,12 @@
 import { Chat, Message, MessageMedia } from 'whatsapp-web.js';
 
-import { RouteBase } from './base';
+import { BaseHandler } from './base';
 import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
-export class SpeechRoute extends RouteBase {
-  constructor(chat: Chat, agent = new Agent(AgentEnum.audio)) {
-    super(chat, agent, '.speech');
+export class SpeechHandler extends BaseHandler {
+  constructor(agent = new Agent(AgentEnum.audio)) {
+    super(agent, '.speech');
   }
 
   private async toBase64(response: string): Promise<string> {
@@ -16,10 +16,10 @@ export class SpeechRoute extends RouteBase {
     return Buffer.from(arrayBuffer).toString('base64');
   }
 
-  async handle(msg: Message): Promise<boolean | null> {
+  async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
       const response = await this.sendToGPT(msg.body);
-      if (!response) return null;
+      if (!response) return false;
 
       const base64 = await this.toBase64(response);
       const msgMedia = new MessageMedia('audio/ogg', base64);

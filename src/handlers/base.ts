@@ -1,17 +1,14 @@
 import { Chat, Message } from 'whatsapp-web.js';
 import { Agent } from '../openai/agent';
 
-export abstract class RouteBase {
+export abstract class BaseHandler {
   protected command: string | null = null;
 
   protected readonly agent: Agent;
 
-  readonly chat: Chat;
-
   name: string = 'BASE';
 
-  constructor(chat: Chat, agent: Agent, command: string | null = null) {
-    this.chat = chat;
+  constructor(agent: Agent, command: string | null = null) {
     this.agent = agent;
 
     if (command !== null) {
@@ -28,11 +25,11 @@ export abstract class RouteBase {
     return message.body.startsWith(this.command);
   }
 
-  async answer(_: string): Promise<boolean | null> {
+  async answer(chat: Chat, msg: string): Promise<boolean | null> {
     return null;
   }
 
-  async handle(_: Message): Promise<boolean | null> {
+  async handle(chat: Chat, msg: Message): Promise<boolean | null> {
     return null;
   }
 
@@ -51,12 +48,14 @@ export abstract class RouteBase {
       ? message.body.replace(this.command, '').trim()
       : message.body;
 
+    const chat = await message.getChat();
+
     let response: boolean | null = null;
-    response ??= await this.answer(content);
-    response ??= await this.handle(message);
+    response ??= await this.answer(chat, content);
+    response ??= await this.handle(chat, message);
 
     if (response === null) {
-      await this.chat.sendMessage('No response, unexpected error');
+      await chat.sendMessage('No response, unexpected error');
       return false;
     }
 

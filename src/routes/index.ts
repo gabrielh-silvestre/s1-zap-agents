@@ -1,23 +1,17 @@
-import { Chat } from 'whatsapp-web.js';
+import { createRouteManager } from './manager';
 
-import { RouteManager } from './manager';
+import {
+  AudioHandler,
+  CodeHandler,
+  HelpHandler,
+  SpeechHandler,
+} from '../handlers';
+import { RootHandler } from '../handlers/root';
 
-import { HelpRoute } from './help';
-import { RawRoute } from './raw';
-import { CodeRoute } from './code';
-import { AudioRoute } from './audio';
-import { SpeechRoute } from './speech';
-
-export class Router {
-  readonly manager: RouteManager;
-
-  constructor(chat: Chat) {
-    this.manager = new RouteManager(
-      new HelpRoute(chat),
-      new CodeRoute(chat),
-      new AudioRoute(chat),
-      new SpeechRoute(chat),
-      new RawRoute(chat)
-    );
-  }
-}
+export const router = createRouteManager(
+  HelpHandler,
+  AudioHandler,
+  CodeHandler,
+  SpeechHandler,
+  RootHandler
+);

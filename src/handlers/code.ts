@@ -1,19 +1,19 @@
 import { Chat } from 'whatsapp-web.js';
 
-import { RouteBase } from './base';
+import { BaseHandler } from './base';
 import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
-export class CodeRoute extends RouteBase {
-  constructor(chat: Chat, agent = new Agent(AgentEnum.code)) {
-    super(chat, agent, '.code');
+export class CodeHandler extends BaseHandler {
+  constructor(agent = new Agent(AgentEnum.code)) {
+    super(agent, '.code');
   }
 
-  async answer(msg: string): Promise<boolean | null> {
+  async answer(chat: Chat, msg: string): Promise<boolean | null> {
     try {
       const response = await this.sendToGPT(msg);
 
-      await this.chat.sendMessage(response);
+      await chat.sendMessage(response);
 
       return true;
     } catch (error: any) {

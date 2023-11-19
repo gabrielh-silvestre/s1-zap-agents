@@ -1,7 +1,7 @@
 import { Client, LocalAuth, Chat } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
-import { Router } from './routes';
+import { router } from './routes';
 
 const CHAT_ID = process.env.CHAT_ID as string;
 
@@ -34,12 +34,13 @@ client.on('auth_failure', () => {
 
 client.on('ready', async () => {
   console.log('READY');
-
-  pvChat = await client.getChatById(CHAT_ID);
 });
 
 client.on('message_create', async (msg) => {
-  await new Router(pvChat).manager.message(msg);
+  // IMPORTANT Only answer "self" messages
+  if (!msg.fromMe) return;
+
+  await router.message(msg);
 });
 
 process.on('SIGINT', async () => {
