@@ -7,6 +7,7 @@ import {
   SpeechHandler,
   TextHandler,
   TranscribeHandler,
+  defaultHandlers,
 } from '.';
 
 const AGENT_ID = process.env.AGENT_ID as string;
@@ -26,21 +27,7 @@ startAgent(client, {
   route: [
     {
       event: Events.MESSAGE_CREATE,
-      handlers: [
-        { handler: AudioHandler, opts: { agent: new AgentOpenAI(AGENT_ID) } },
-        {
-          handler: SpeechHandler,
-          opts: { agent: new AgentOpenAI(AGENT_ID), command: '--to-audio' },
-        },
-        {
-          handler: TranscribeHandler,
-          opts: { agent: new AgentOpenAI(AGENT_ID), command: '--to-text' },
-        },
-        {
-          handler: TextHandler,
-          opts: { agent: new AgentOpenAI(AGENT_ID), command: '/gpt' },
-        },
-      ],
+      handlers: defaultHandlers(new AgentOpenAI(AGENT_ID)),
     },
   ],
 });
