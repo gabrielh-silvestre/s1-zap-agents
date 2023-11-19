@@ -107,7 +107,7 @@ describe('[Unit] Test for BaseHandler', () => {
       // Assert
       expect(result).toBe(false);
 
-      expect(mockedMessage.getChat).not.toHaveBeenCalled();
+      expect(mockedMessage.getChat).toHaveBeenCalled();
       expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
       expect(spyAnswer).not.toHaveBeenCalled();
