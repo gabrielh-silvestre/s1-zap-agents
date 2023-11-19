@@ -2,19 +2,24 @@ import { Chat, Message } from 'whatsapp-web.js';
 import { Agent } from '../openai/agent';
 
 export abstract class RouteBase {
-  readonly command: string;
+  private command: string | null = null;
 
   readonly chat: Chat;
 
   protected readonly agent: Agent;
 
-  constructor(command: string, chat: Chat, agent: Agent) {
-    this.command = '/gpt'.concat(`.${command}`);
+  constructor(chat: Chat, agent: Agent, command: string | null = null) {
     this.chat = chat;
     this.agent = agent;
+
+    if (command !== null) this.command = `/gpt${command}`;
   }
 
   protected shouldExecute(message: Message): boolean {
+    if (!this.command) {
+      throw new Error('Command not defined and shouldExecute not overrided');
+    }
+
     return message.body.startsWith(this.command);
   }
 
@@ -34,7 +39,9 @@ export abstract class RouteBase {
     const shouldReply = this.shouldExecute(message);
     if (!shouldReply) return false;
 
-    const content = message.body.replace(this.command, '').trim();
+    const content = this.command
+      ? message.body.replace(this.command, '').trim()
+      : message.body;
 
     let response: string | null = null;
     response ??= await this.answer(content);

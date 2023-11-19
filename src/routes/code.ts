@@ -6,7 +6,7 @@ import { AgentEnum } from '../utils';
 
 export class CodeRoute extends RouteBase {
   constructor(chat: Chat, agent = new Agent(AgentEnum.code)) {
-    super('code', chat, agent);
+    super(chat, agent, '.code');
   }
 
   async answer(msg: string): Promise<string | null> {

@@ -2,10 +2,11 @@ import { Chat } from 'whatsapp-web.js';
 
 import { RouteBase } from './base';
 import { Agent } from '../openai/agent';
+import { AgentEnum } from '../utils';
 
 export class RawRoute extends RouteBase {
-  constructor(chat: Chat) {
-    super('raw', chat, new Agent('asst_qAybN7Be1IswTGYhD9kC7NYi'));
+  constructor(chat: Chat, agent = new Agent(AgentEnum.raw)) {
+    super(chat, agent, ''); // Allow call GPT only with /gpt
   }
 
   async answer(msg: string): Promise<string | null> {

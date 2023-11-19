@@ -5,12 +5,11 @@ import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
 export class AudioRoute extends RouteBase {
-  constructor(chat: Chat) {
-    super('audio', chat, new Agent(AgentEnum.audio));
+  constructor(chat: Chat, agent = new Agent(AgentEnum.audio)) {
+    super(chat, agent);
   }
 
   protected shouldExecute(message: Message): boolean {
-    console.log(message.hasMedia, message.hasQuotedMsg);
     return message.hasMedia && !message.hasQuotedMsg;
   }
 

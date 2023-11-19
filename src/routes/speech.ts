@@ -5,8 +5,8 @@ import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
 export class SpeechRoute extends RouteBase {
-  constructor(chat: Chat) {
-    super('speech', chat, new Agent(AgentEnum.audio));
+  constructor(chat: Chat, agent = new Agent(AgentEnum.audio)) {
+    super(chat, agent, '.speech');
   }
 
   private async toBase64(response: string): Promise<string> {
