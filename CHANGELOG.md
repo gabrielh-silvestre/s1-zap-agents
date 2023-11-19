@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.2...v1.1.3) (2023-11-19)
+
+
+### Features
+
+* define default handlers to decrease start time ([32f059b](https://github.com/gabrielh-silvestre/s1-agents/commit/32f059bf2e61c272895eab5eeca8abd892bc12fe))
+
 ### [1.1.2](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.1...v1.1.2) (2023-11-19)
 
 ### [1.1.1](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.0...v1.1.1) (2023-11-19)
