@@ -11,7 +11,11 @@ export class RouteManager {
   async message(messsage: Message) {
     for (const route of this.routes) {
       const executed = await route.execute(messsage);
-      if (executed) break;
+
+      if (executed) {
+        console.log(route.name);
+        break;
+      }
     }
   }
 }

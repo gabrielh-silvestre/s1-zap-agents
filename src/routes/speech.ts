@@ -16,7 +16,7 @@ export class SpeechRoute extends RouteBase {
     return Buffer.from(arrayBuffer).toString('base64');
   }
 
-  async handle(msg: Message): Promise<string | null> {
+  async handle(msg: Message): Promise<boolean | null> {
     try {
       const response = await this.sendToGPT(msg.body);
       if (!response) return null;
@@ -25,7 +25,7 @@ export class SpeechRoute extends RouteBase {
       const msgMedia = new MessageMedia('audio/ogg', base64);
 
       await msg.reply(msgMedia);
-      return '🤠';
+      return true;
     } catch (error: any) {
       console.log(error);
       return null;

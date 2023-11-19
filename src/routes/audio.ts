@@ -5,6 +5,8 @@ import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
 export class AudioRoute extends RouteBase {
+  name = 'AudioRoute';
+
   constructor(chat: Chat, agent = new Agent(AgentEnum.audio)) {
     super(chat, agent);
   }
@@ -13,12 +15,15 @@ export class AudioRoute extends RouteBase {
     return message.hasMedia && !message.hasQuotedMsg;
   }
 
-  async handle(msg: Message): Promise<string | null> {
+  async handle(msg: Message): Promise<boolean | null> {
     try {
       const media = await msg.downloadMedia();
       const { text } = await this.agent.transcriptAudio(media.data);
 
-      return await this.sendToGPT(text);
+      const response = await this.sendToGPT(text);
+      await this.chat.sendMessage(response);
+
+      return true;
     } catch (error: any) {
       console.error(error);
       return null;

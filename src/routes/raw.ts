@@ -9,9 +9,12 @@ export class RawRoute extends RouteBase {
     super(chat, agent, ''); // Allow call GPT only with /gpt
   }
 
-  async answer(msg: string): Promise<string | null> {
+  async answer(msg: string): Promise<boolean | null> {
     try {
-      return await this.sendToGPT(msg);
+      const response = await this.sendToGPT(msg);
+      await this.chat.sendMessage(response);
+
+      return true;
     } catch (error: any) {
       console.error(error);
       return null;

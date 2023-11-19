@@ -2,11 +2,13 @@ import { Chat, Message } from 'whatsapp-web.js';
 import { Agent } from '../openai/agent';
 
 export abstract class RouteBase {
-  private command: string | null = null;
+  protected command: string | null = null;
+
+  protected readonly agent: Agent;
 
   readonly chat: Chat;
 
-  protected readonly agent: Agent;
+  name: string = this.command ?? 'BASE';
 
   constructor(chat: Chat, agent: Agent, command: string | null = null) {
     this.chat = chat;
@@ -23,16 +25,19 @@ export abstract class RouteBase {
     return message.body.startsWith(this.command);
   }
 
-  async answer(_: string): Promise<string | null> {
+  async answer(_: string): Promise<boolean | null> {
     return null;
   }
 
-  async handle(_: Message): Promise<string | null> {
+  async handle(_: Message): Promise<boolean | null> {
     return null;
   }
 
-  protected async sendToGPT(message: string): Promise<string | null> {
-    return await this.agent.complet(message);
+  protected async sendToGPT(message: string): Promise<string | never> {
+    const response = await this.agent.complet(message);
+    if (!response) throw new Error('No response from GPT');
+
+    return response;
   }
 
   async execute(message: Message): Promise<boolean> {
@@ -43,12 +48,14 @@ export abstract class RouteBase {
       ? message.body.replace(this.command, '').trim()
       : message.body;
 
-    let response: string | null = null;
+    let response: boolean | null = null;
     response ??= await this.answer(content);
     response ??= await this.handle(message);
 
-    if (!response) await this.chat.sendMessage('No response, try /gpt.help');
-    await this.chat.sendMessage(response as string);
+    if (response === null) {
+      await this.chat.sendMessage('No response, unexpected error');
+      return false;
+    }
 
     return true;
   }
