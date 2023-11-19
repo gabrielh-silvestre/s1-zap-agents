@@ -12,7 +12,9 @@ export function routerManagerFactory(
 
   for (const opt of opts) {
     const { handlers, event } = opt;
-    const route = handlers.map((h: any) => new h());
+    const route = handlers.map(
+      ({ handler, agent }) => new (handler as any)(agent)
+    );
 
     if (!hub.has(event)) hub.set(event, new Set());
 

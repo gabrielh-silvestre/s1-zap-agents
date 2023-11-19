@@ -2,10 +2,9 @@ import { Chat, Message, MessageMedia } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
 import { Agent } from '../openai/agent';
-import { AgentEnum } from '../utils';
 
 export class SpeechHandler extends BaseHandler {
-  constructor(public agent = new Agent(AgentEnum.audio)) {
+  constructor(public agent: Agent) {
     super('.speech');
   }
 
@@ -27,7 +26,7 @@ export class SpeechHandler extends BaseHandler {
       await msg.reply(msgMedia);
       return true;
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       return null;
     }
   }

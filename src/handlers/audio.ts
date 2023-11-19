@@ -2,12 +2,11 @@ import { Chat, Message } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
 import { Agent } from '../openai/agent';
-import { AgentEnum } from '../utils';
 
 export class AudioHandler extends BaseHandler {
   name = 'AudioRoute';
 
-  constructor(public agent = new Agent(AgentEnum.audio)) {
+  constructor(public agent: Agent) {
     super();
   }
 

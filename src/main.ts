@@ -9,6 +9,8 @@ import {
   SpeechHandler,
 } from './handlers';
 import { RootHandler } from './handlers/root';
+import { Agent } from './openai/agent';
+import { AgentEnum } from './utils';
 
 export const client = new Client({
   puppeteer: {
@@ -24,11 +26,11 @@ routerManagerFactory(client, [
   {
     event: Events.MESSAGE_CREATE,
     handlers: [
-      HelpHandler,
-      AudioHandler,
-      CodeHandler,
-      SpeechHandler,
-      RootHandler,
+      { handler: HelpHandler },
+      { handler: AudioHandler, agent: new Agent(AgentEnum.audio) },
+      { handler: CodeHandler, agent: new Agent(AgentEnum.code) },
+      { handler: SpeechHandler, agent: new Agent(AgentEnum.audio) },
+      { handler: RootHandler, agent: new Agent(AgentEnum.raw) },
     ],
   },
 ]);
@@ -50,6 +52,14 @@ client.on('auth_failure', () => {
 
 client.on('ready', async () => {
   console.log('READY');
+});
+
+client.on('disconnected', (reason) => {
+  console.log('Client was logged out', reason);
+});
+
+client.on('message', (msg) => {
+  console.log('MESSAGE RECEIVED', msg.type);
 });
 
 process.on('SIGINT', async () => {

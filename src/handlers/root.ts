@@ -2,10 +2,9 @@ import { Chat } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
 import { Agent } from '../openai/agent';
-import { AgentEnum } from '../utils';
 
 export class RootHandler extends BaseHandler {
-  constructor(public agent = new Agent(AgentEnum.raw)) {
+  constructor(public agent: Agent) {
     super(''); // Allow call GPT only with /gpt
   }
 

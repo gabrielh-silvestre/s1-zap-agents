@@ -1,5 +1,4 @@
 import { Chat, Message } from 'whatsapp-web.js';
-import { Agent } from '../openai/agent';
 
 export abstract class BaseHandler {
   protected command: string | null = null;
@@ -32,6 +31,8 @@ export abstract class BaseHandler {
   async execute(message: Message): Promise<boolean> {
     const shouldReply = this.shouldExecute(message);
     if (!shouldReply) return false;
+
+    console.log(`Executing ${this.name} handler`);
 
     const content = this.command
       ? message.body.replace(this.command, '').trim()

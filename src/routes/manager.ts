@@ -10,13 +10,15 @@ export class RouteManager {
     this.hub = hub;
     this.client = client;
 
-    this.hub.forEach((handlers, event) => {
+    for (const [event, handlers] of this.hub) {
       client.on(event, async (msg) => {
+        if (!msg.fromMe) return; // Only handle messages from the "host" account
+
         for (const handler of handlers) {
           const executed = await handler.execute(msg);
           if (executed) break;
         }
       });
-    });
+    }
   }
 }
