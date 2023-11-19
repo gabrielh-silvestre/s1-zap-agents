@@ -5,13 +5,15 @@ import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
 export class RootHandler extends BaseHandler {
-  constructor(agent = new Agent(AgentEnum.raw)) {
-    super(agent, ''); // Allow call GPT only with /gpt
+  constructor(public agent = new Agent(AgentEnum.raw)) {
+    super(''); // Allow call GPT only with /gpt
   }
 
   async answer(chat: Chat, msg: string): Promise<boolean | null> {
     try {
-      const response = await this.sendToGPT(msg);
+      const response = await this.agent.complet(msg);
+      if (!response) return false;
+
       await chat.sendMessage(response);
 
       return true;

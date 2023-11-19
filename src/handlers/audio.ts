@@ -7,8 +7,8 @@ import { AgentEnum } from '../utils';
 export class AudioHandler extends BaseHandler {
   name = 'AudioRoute';
 
-  constructor(agent = new Agent(AgentEnum.audio)) {
-    super(agent);
+  constructor(public agent = new Agent(AgentEnum.audio)) {
+    super();
   }
 
   protected shouldExecute(message: Message): boolean {
@@ -20,7 +20,9 @@ export class AudioHandler extends BaseHandler {
       const media = await msg.downloadMedia();
       const { text } = await this.agent.transcriptAudio(media.data);
 
-      const response = await this.sendToGPT(text);
+      const response = await this.agent.complet(text);
+      if (!response) return false;
+
       await chat.sendMessage(response);
 
       return true;

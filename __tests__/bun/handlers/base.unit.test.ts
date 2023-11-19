@@ -1,20 +1,10 @@
-import {
-  Mock,
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  jest,
-  mock,
-  spyOn,
-} from 'bun:test';
+import { Mock, beforeEach, describe, expect, it, mock, spyOn } from 'bun:test';
 import { BaseHandler } from '../../../src/handlers';
-import { mockAgent, mockWppChat, mockWppMessage } from '../../mocks';
+import { mockWppChat, mockWppMessage } from '../../mocks';
 
 export class BaseHandlerImp extends BaseHandler {
   constructor(command: string | null = null) {
-    super(mockAgent as any, command);
+    super(command);
   }
 }
 
@@ -102,7 +92,7 @@ describe('[Unit] Test for BaseHandler', () => {
 
     it('should return false if shouldExecute returns false', async () => {
       // Arrange
-      handler = new BaseHandlerImp('FAIL_EXECUTE');
+      handler = new BaseHandlerImp('FAIL');
 
       // Act
       const result = await handler.execute(mockWppMessage);

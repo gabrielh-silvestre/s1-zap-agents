@@ -4,13 +4,9 @@ import { Agent } from '../openai/agent';
 export abstract class BaseHandler {
   protected command: string | null = null;
 
-  protected readonly agent: Agent;
-
   name: string = 'BASE';
 
-  constructor(agent: Agent, command: string | null = null) {
-    this.agent = agent;
-
+  constructor(command: string | null = null) {
     if (command !== null) {
       this.command = `/gpt${command}`;
       this.name = this.command;
@@ -31,13 +27,6 @@ export abstract class BaseHandler {
 
   async handle(chat: Chat, msg: Message): Promise<boolean | null> {
     return null;
-  }
-
-  protected async sendToGPT(message: string): Promise<string | never> {
-    const response = await this.agent.complet(message);
-    if (!response) throw new Error('No response from GPT');
-
-    return response;
   }
 
   async execute(message: Message): Promise<boolean> {

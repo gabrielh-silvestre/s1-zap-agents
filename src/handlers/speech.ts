@@ -5,8 +5,8 @@ import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
 export class SpeechHandler extends BaseHandler {
-  constructor(agent = new Agent(AgentEnum.audio)) {
-    super(agent, '.speech');
+  constructor(public agent = new Agent(AgentEnum.audio)) {
+    super('.speech');
   }
 
   private async toBase64(response: string): Promise<string> {
@@ -18,7 +18,7 @@ export class SpeechHandler extends BaseHandler {
 
   async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
-      const response = await this.sendToGPT(msg.body);
+      const response = await this.agent.complet(msg.body);
       if (!response) return false;
 
       const base64 = await this.toBase64(response);

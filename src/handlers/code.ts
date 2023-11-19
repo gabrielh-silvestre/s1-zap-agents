@@ -5,13 +5,14 @@ import { Agent } from '../openai/agent';
 import { AgentEnum } from '../utils';
 
 export class CodeHandler extends BaseHandler {
-  constructor(agent = new Agent(AgentEnum.code)) {
-    super(agent, '.code');
+  constructor(public agent = new Agent(AgentEnum.code)) {
+    super('.code');
   }
 
   async answer(chat: Chat, msg: string): Promise<boolean | null> {
     try {
-      const response = await this.sendToGPT(msg);
+      const response = await this.agent.complet(msg);
+      if (!response) return false;
 
       await chat.sendMessage(response);
 
