@@ -1,4 +1,5 @@
-import { OpenAI } from 'openai';
+import fetch from 'node-fetch';
+import { OpenAI, toFile } from 'openai';
 import { sleep } from 'openai/core.mjs';
 import { Run } from 'openai/resources/beta/threads/runs/runs.mjs';
 
@@ -33,6 +34,27 @@ export class Agent {
     if (!hadSuccess) throw new Error(response.last_error?.message);
 
     return response;
+  }
+
+  private async transformAudiOggToBlob(media: string) {
+    const buffer = Buffer.from(media, 'base64');
+    const dataUrl = `data:audio/ogg;base64,${buffer.toString('base64')}`;
+
+    const response = await fetch(dataUrl);
+    return await response.blob();
+  }
+
+  async transcriptAudio(media: string) {
+    const blob = await this.transformAudiOggToBlob(media);
+    const file = await toFile(blob, 'audio.ogg', { type: 'audio/ogg' });
+
+    const transcription = await this.openai.audio.transcriptions.create({
+      file,
+      model: 'whisper-1',
+      temperature: 0.6,
+    });
+
+    return transcription;
   }
 
   async createAndRunThread(content: string) {

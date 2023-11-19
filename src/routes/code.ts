@@ -2,9 +2,10 @@ import { Chat } from 'whatsapp-web.js';
 
 import { RouteBase } from './base';
 import { Agent } from '../openai/agent';
+import { AgentEnum } from '../utils';
 
 export class CodeRoute extends RouteBase {
-  constructor(chat: Chat, agent = new Agent('asst_eY37OZdnJXXwXC0Rt9uIymav')) {
+  constructor(chat: Chat, agent = new Agent(AgentEnum.code)) {
     super('code', chat, agent);
   }
 

@@ -39,6 +39,9 @@ client.on('ready', async () => {
 });
 
 client.on('message_create', async (msg) => {
+  console.log('MESSAGE_CREATE');
+
+  if (msg.hasMedia) msg.body = '/gpt.speech';
   await new Router(pvChat).manager.message(msg);
 });
 
