@@ -11,7 +11,13 @@ export class BaseHandlerImp extends BaseHandler {
 describe('[Unit] Test for BaseHandler', () => {
   let handler: BaseHandlerImp;
 
+  let mockedChat: any;
+  let mockedMessage: any;
+
   beforeEach(() => {
+    mockedChat = mockWppChat();
+    mockedMessage = mockWppMessage();
+
     handler = new BaseHandlerImp('.test-mock');
   });
 
@@ -25,7 +31,7 @@ describe('[Unit] Test for BaseHandler', () => {
       handler = new BaseHandlerImp();
 
       // Act
-      const act = () => handler.execute(mockWppMessage);
+      const act = () => handler.execute(mockedMessage);
 
       // Assert
       try {
@@ -41,7 +47,7 @@ describe('[Unit] Test for BaseHandler', () => {
       handler = new BaseHandlerImp('FAIL');
 
       // Act
-      const act = () => handler.execute(mockWppMessage);
+      const act = () => handler.execute(mockedMessage);
 
       // Assert
       expect(await act()).toBe(false);
@@ -52,7 +58,7 @@ describe('[Unit] Test for BaseHandler', () => {
       handler.answer = mock(async () => true);
 
       // Act
-      const act = () => handler.execute(mockWppMessage);
+      const act = () => handler.execute(mockedMessage);
 
       // Assert
       expect(await act()).toBe(true);
@@ -62,7 +68,7 @@ describe('[Unit] Test for BaseHandler', () => {
   describe('.answer', () => {
     it('should return null for default', async () => {
       // Act
-      const act = () => handler.answer(mockWppChat, 'test');
+      const act = () => handler.answer(mockedChat, 'test');
 
       // Assert
       expect(await act()).toBe(null);
@@ -72,7 +78,7 @@ describe('[Unit] Test for BaseHandler', () => {
   describe('.handle', () => {
     it('should return null for default', async () => {
       // Act
-      const act = () => handler.handle(mockWppChat, mockWppMessage);
+      const act = () => handler.handle(mockedChat, mockedMessage);
 
       // Assert
       expect(await act()).toBe(null);
@@ -95,14 +101,13 @@ describe('[Unit] Test for BaseHandler', () => {
       handler = new BaseHandlerImp('FAIL');
 
       // Act
-      const result = await handler.execute(mockWppMessage);
+      const result = await handler.execute(mockedMessage);
 
       // Assert
       expect(result).toBe(false);
 
-      // TODO fix this, it should not be called and its not, but jest is
-      expect(mockWppMessage.getChat).toHaveBeenCalled();
-      expect(mockWppChat.sendMessage).not.toHaveBeenCalled();
+      expect(mockedMessage.getChat).not.toHaveBeenCalled();
+      expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
       expect(spyAnswer).not.toHaveBeenCalled();
       expect(spyHandle).not.toHaveBeenCalled();
@@ -113,13 +118,13 @@ describe('[Unit] Test for BaseHandler', () => {
       handler.answer = mock(async () => false);
 
       // Act
-      const result = await handler.execute(mockWppMessage);
+      const result = await handler.execute(mockedMessage);
 
       // Assert
       expect(result).toBe(false);
 
-      expect(mockWppMessage.getChat).toHaveBeenCalled();
-      expect(mockWppChat.sendMessage).not.toHaveBeenCalled();
+      expect(mockedMessage.getChat).toHaveBeenCalled();
+      expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
       expect(handler.answer).toHaveBeenCalled();
       expect(spyHandle).not.toHaveBeenCalled();
@@ -130,13 +135,13 @@ describe('[Unit] Test for BaseHandler', () => {
       handler.handle = mock(async () => false);
 
       // Act
-      const result = await handler.execute(mockWppMessage);
+      const result = await handler.execute(mockedMessage);
 
       // Assert
       expect(result).toBe(false);
 
-      expect(mockWppMessage.getChat).toHaveBeenCalled();
-      expect(mockWppChat.sendMessage).not.toHaveBeenCalled();
+      expect(mockedMessage.getChat).toHaveBeenCalled();
+      expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
       expect(spyAnswer).toHaveBeenCalled();
       expect(handler.handle).toHaveBeenCalled();
@@ -144,13 +149,13 @@ describe('[Unit] Test for BaseHandler', () => {
 
     it('should return null if message is not handled or answered', async () => {
       // Act
-      const result = await handler.execute(mockWppMessage);
+      const result = await handler.execute(mockedMessage);
 
       // Assert
       expect(result).toBe(false);
 
-      expect(mockWppMessage.getChat).toHaveBeenCalled();
-      expect(mockWppChat.sendMessage).toHaveBeenCalled();
+      expect(mockedMessage.getChat).toHaveBeenCalled();
+      expect(mockedChat.sendMessage).not.toHaveBeenCalled();
 
       expect(spyAnswer).toHaveBeenCalled();
       expect(spyHandle).toHaveBeenCalled();
