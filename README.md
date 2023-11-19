@@ -1,15 +1,11 @@
 # cheap-gpt
 
-To install dependencies:
+## Docker
 
 ```bash
-bun install
+docker build --build-arg OPENAI_API_KEY=$OPENAI_API_KEY \
+             --build-arg OPENAI_RAW_AGENT=<your_agent_id> \
+             --build-arg OPENAI_CODE_AGENT=<your_agent_id> \
+             --build-arg OPENAI_AUDIO_AGENT=<your_agent_id> \
+             -t cheap-gpt:latest .
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.0.4. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

@@ -10,7 +10,7 @@ let pvChat: Chat;
 export const client = new Client({
   puppeteer: {
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    executablePath: '/usr/bin/google-chrome',
+    executablePath: process.env.CHROME_BIN,
     headless: true,
   },
 
