@@ -5,7 +5,7 @@ import { Run } from 'openai/resources/beta/threads/runs/runs.mjs';
 
 import { IAgent } from '../types/agent';
 
-export class Agent implements IAgent {
+export class AgentOpenAI implements IAgent {
   protected readonly agentId: string;
 
   openai: OpenAI;

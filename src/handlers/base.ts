@@ -10,14 +10,18 @@ export abstract class BaseHandler {
 
   name: string = 'BASE';
 
-  constructor(opts: HandlerOpts = { agent: null, command: null }) {
-    this.agent = opts.agent ?? null;
+  constructor(
+    { agent = null, command = null }: HandlerOpts = {
+      agent: null,
+      command: null,
+    }
+  ) {
+    this.agent = agent ?? null;
 
-    const isCommandString = typeof opts.command === 'string';
-
+    const isCommandString = typeof command === 'string';
     if (isCommandString) {
-      this.command = opts.command ?? null;
-      this.name = opts.command ?? this.name;
+      this.command = command;
+      this.name = command ?? this.name;
     }
   }
 
@@ -39,14 +43,10 @@ export abstract class BaseHandler {
   }
 
   async execute(message: Message): Promise<boolean> {
-    const shouldReply = this.shouldExecute(message);
-    if (!shouldReply) return false;
-
-    console.log(`Executing ${this.name} handler`);
-
-    const content = this.command
-      ? message.body.replace(this.command, '').trim()
-      : message.body;
+    const content =
+      message.body && this.command
+        ? message.body.replace(this.command, '').trim()
+        : message.body;
 
     const chat = await message.getChat();
 

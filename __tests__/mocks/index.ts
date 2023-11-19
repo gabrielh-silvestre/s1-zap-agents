@@ -1,11 +1,11 @@
 import { mock } from 'bun:test';
 import { Chat, Message } from 'whatsapp-web.js';
-import { Agent } from '../../src/openai/agent';
+import { AgentOpenAI } from '../../src/openai/agent';
 
 export const mockAgent = () =>
   ({
     complet: mock(async () => '[MOCKED] GPT response'),
-  } as unknown as Agent);
+  } as unknown as AgentOpenAI);
 
 export const mockWppChat = () =>
   ({

@@ -2,7 +2,7 @@ import { Chat, Message } from 'whatsapp-web.js';
 
 import { BaseHandler } from '.';
 
-export class TracribeHandler extends BaseHandler {
+export class TranscribeHandler extends BaseHandler {
   shouldExecute(msg: Message): boolean {
     if (!msg.fromMe) return false;
 
