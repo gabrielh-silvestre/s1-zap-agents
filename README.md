@@ -1,6 +1,8 @@
-# cheap-gpt
+# S1-Agent
 
-## Docker
+## Local Setup
+
+### Docker
 
 ```bash
 docker build --build-arg OPENAI_API_KEY=$OPENAI_API_KEY \
@@ -11,6 +13,18 @@ docker build --build-arg OPENAI_API_KEY=$OPENAI_API_KEY \
 ```bash
 docker run -it --rm cheap-gpt:latest
 ```
+
+### [Bun](https://bun.sh)
+
+```bash
+bun i
+```
+
+```bash
+bun run src/bin.ts
+```
+
+---
 
 ## Usage Example
 

@@ -1,8 +1,7 @@
 {
   "name": "s1-agents",
-  "module": "src/main.ts",
+  "module": "src/index.ts",
   "type": "module",
-  "main": "src/main.ts",
   "bin": "src/bin.ts",
   "author": "Gabriel Silvestre <gabriel.h.silvestre11@gmail.com>",
   "license": "ISC",
@@ -11,7 +10,8 @@
     "start": "bun src/bin.ts",
     "build": "rollup -c",
     "prepare": "bun run build",
-    "prepublishOnly": "bun test",
+    "prepublishOnly": "bun run test",
+    "test": "bun test",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major"
@@ -20,6 +20,7 @@
     "@types/qrcode-terminal": "^0.12.2",
     "bun-types": "latest",
     "rollup": "^4.5.0",
+    "rollup-plugin-typescript2": "^0.36.0",
     "standard-version": "^9.5.0"
   },
   "peerDependencies": {

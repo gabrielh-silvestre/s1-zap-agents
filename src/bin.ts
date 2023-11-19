@@ -7,7 +7,7 @@ import {
   SpeechHandler,
   TextHandler,
   TranscribeHandler,
-} from './main';
+} from '.';
 
 const AGENT_ID = process.env.AGENT_ID as string;
 if (!AGENT_ID) throw new Error('$AGENT_ID is required');
