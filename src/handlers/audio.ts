@@ -11,7 +11,7 @@ export class AudioHandler extends BaseHandler {
   }
 
   protected shouldExecute(message: Message): boolean {
-    return message.hasMedia && !message.hasQuotedMsg;
+    return message.hasMedia && message.type === 'ptt' && !message.hasQuotedMsg;
   }
 
   async handle(chat: Chat, msg: Message): Promise<boolean | null> {
