@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.5](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.4...v1.2.5) (2023-11-21)
+
+
+### Bug Fixes
+
+* remove ky, use node-fetch again ([acca80e](https://github.com/gabrielh-silvestre/s1-agents/commit/acca80ecbea5474c3ca2861a199bb734a5b05170))
+
 ### [1.2.4](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.3...v1.2.4) (2023-11-21)
 
 
