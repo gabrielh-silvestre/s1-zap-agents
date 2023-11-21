@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.0...v1.2.1) (2023-11-21)
+
+
+### Bug Fixes
+
+* export missing function on entry point ([df16fc6](https://github.com/gabrielh-silvestre/s1-agents/commit/df16fc64502b73b73cb29581ede03fb2945a5fb6))
+
 ## [1.2.0](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.3...v1.2.0) (2023-11-21)
 
 
