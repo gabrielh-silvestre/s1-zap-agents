@@ -1,18 +1,44 @@
 import fetch from 'node-fetch';
 import { OpenAI, toFile } from 'openai';
-import { sleep } from 'openai/core.mjs';
-import { Run } from 'openai/resources/beta/threads/runs/runs.mjs';
+import { sleep } from 'openai/core';
+import { Run } from 'openai/resources/beta/threads/runs/runs';
 
 import { IAgent } from '../types/agent';
+import { AgentFunction } from './function';
 
 export class AgentOpenAI implements IAgent {
   protected readonly agentId: string;
 
+  functions: Map<string, AgentFunction> = new Map();
+
   openai: OpenAI;
 
-  constructor(agentId: string) {
+  constructor(agentId: string, functions: AgentFunction[] = []) {
     this.openai = new OpenAI();
     this.agentId = agentId;
+
+    for (const fn of functions) {
+      this.functions.set(fn.name, fn);
+    }
+  }
+
+  private async *treatAction(run: Run) {
+    const tools = run.required_action.submit_tool_outputs.tool_calls;
+
+    for (const tool of tools) {
+      const { name, arguments: args } = tool.function;
+      const output = await this.executeFunction(name, JSON.parse(args));
+
+      yield { tool_call_id: tool.id, output };
+    }
+  }
+
+  private async executeFunction(name: string, args: object[]) {
+    const fn = this.functions.get(name);
+    if (!fn) throw new Error(`Function ${name} not found`);
+
+    console.log(`Executing function ${name}`);
+    return await fn.execute(args);
   }
 
   private async poolingRun(threadId: string, runId: string): Promise<Run> {
@@ -22,6 +48,18 @@ export class AgentOpenAI implements IAgent {
     );
 
     console.log(response.status);
+
+    if (response.status === 'requires_action') {
+      let toolOutputs: any[] = [];
+
+      for await (const result of this.treatAction(response)) {
+        toolOutputs.push(result);
+      }
+
+      await this.openai.beta.threads.runs.submitToolOutputs(threadId, runId, {
+        tool_outputs: toolOutputs,
+      });
+    }
 
     const isFinished =
       response.status === 'cancelled' ||
