@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.3...v1.2.0) (2023-11-21)
+
+
+### Features
+
+* **openai:** allow inject functions into AgentOpenAI ([b335bd6](https://github.com/gabrielh-silvestre/s1-agents/commit/b335bd68a38369ee480bacc6aa590b650769194a))
+
+
+### Bug Fixes
+
+* adjust circular dependency on handlers ([738db2d](https://github.com/gabrielh-silvestre/s1-agents/commit/738db2da3cfb67ef2abcb6b24e3d38c1e4dc6d0f))
+* update Dockerfile to package structure ([13dd4ca](https://github.com/gabrielh-silvestre/s1-agents/commit/13dd4cab7a3d601eb0df79bbe374b2872cef46c7))
+
 ### [1.1.3](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.1.2...v1.1.3) (2023-11-19)
 
 
