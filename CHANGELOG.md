@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.1...v1.2.2) (2023-11-21)
+
+
+### Bug Fixes
+
+* install typescript to build correctly ([3b7db24](https://github.com/gabrielh-silvestre/s1-agents/commit/3b7db2438a1bf01577b7233776e1b60b4da94bfa))
+
 ### [1.2.1](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.0...v1.2.1) (2023-11-21)
 
 
