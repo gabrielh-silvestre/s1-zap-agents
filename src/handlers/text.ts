@@ -1,6 +1,6 @@
 import { Chat, Message } from 'whatsapp-web.js';
 
-import { BaseHandler } from '.';
+import { BaseHandler } from './base';
 
 export class TextHandler extends BaseHandler {
   shouldExecute(msg: Message): boolean {

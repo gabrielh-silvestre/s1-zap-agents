@@ -6,15 +6,10 @@ COPY package.json .
 COPY bun.lockb .
 
 ARG OPENAI_API_KEY
-ARG OPENAI_RAW_AGENT
-ARG OPENAI_CODE_AGENT
-ARG OPENAI_AUDIO_AGENT
-ARG CHROME_BIN=/usr/bin/google-chrome
+ARG AGENT_ID
 
 ENV OPENAI_API_KEY=$OPENAI_API_KEY
-ENV OPENAI_RAW_AGENT=$OPENAI_RAW_AGENT
-ENV OPENAI_CODE_AGENT=$OPENAI_CODE_AGENT
-ENV OPENAI_AUDIO_AGENT=$OPENAI_AUDIO_AGENT
+ENV AGENT_ID=$AGENT_ID
 ENV CHROME_BIN=$CHROME_BIN
 
 RUN bun install
@@ -40,4 +35,4 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
 
 USER pptruser
 
-CMD ["bun", "run", "src/main.ts"]
+CMD ["bun", "run", "src/bin.ts"]

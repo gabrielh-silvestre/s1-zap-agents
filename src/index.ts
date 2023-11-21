@@ -4,7 +4,6 @@ import {
   TranscribeHandler,
   TextHandler,
 } from './handlers';
-import { AgentOpenAI } from './openai/agent';
 import { IAgent } from './types/agent';
 
 export { startAgent } from './bootstrap';
