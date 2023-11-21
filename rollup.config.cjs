@@ -12,6 +12,6 @@ module.exports = {
       strict: true,
     },
   ],
-  external: ['ky', 'openai', 'whatsapp-web.js', 'qrcode-terminal'],
+  external: ['whatsapp-web.js'],
   plugins: [typescript()],
 };
