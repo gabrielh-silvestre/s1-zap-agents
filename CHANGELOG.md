@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.2...v1.2.3) (2023-11-21)
+
+
+### Bug Fixes
+
+* add needed external dependencies into rollup build ([82aaf4e](https://github.com/gabrielh-silvestre/s1-agents/commit/82aaf4e0331d7348d7278cf8ca3ef1e135b1c53b))
+
 ### [1.2.2](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.1...v1.2.2) (2023-11-21)
 
 
