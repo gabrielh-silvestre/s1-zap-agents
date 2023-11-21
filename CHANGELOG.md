@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.3...v1.2.4) (2023-11-21)
+
+
+### Bug Fixes
+
+* only leave whatsapp-web package as external ([3eecc1f](https://github.com/gabrielh-silvestre/s1-agents/commit/3eecc1f14ddc488304ac3f42f0f70e22567cb939))
+
 ### [1.2.3](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.2...v1.2.3) (2023-11-21)
 
 
