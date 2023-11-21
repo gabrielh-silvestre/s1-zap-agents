@@ -1,4 +1,4 @@
-import qrcode from 'qrcode-terminal';
+import * as qrcode from 'qrcode-terminal';
 import { createRouterManager } from './routes';
 import { StartAgentOpts } from './types';
 import { Client } from 'whatsapp-web.js';

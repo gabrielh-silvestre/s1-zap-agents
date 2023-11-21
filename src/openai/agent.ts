@@ -1,4 +1,4 @@
-import ky from 'ky';
+import fetch from 'node-fetch';
 import { OpenAI, toFile } from 'openai';
 import { sleep } from 'openai/core';
 import { Run } from 'openai/resources/beta/threads/runs/runs';
@@ -79,7 +79,7 @@ export class AgentOpenAI implements IAgent {
   private async transformAudiOggToBlob(buffer: Buffer) {
     const dataUrl = `data:audio/ogg;base64,${buffer.toString('base64')}`;
 
-    const response = await ky.get(dataUrl);
+    const response = await fetch(dataUrl);
     return await response.blob();
   }
 

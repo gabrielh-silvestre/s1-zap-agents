@@ -9,7 +9,6 @@
     "declaration": true,
     "moduleResolution": "Node",
     "moduleDetection": "force",
-    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
       "bun-types" // add Bun global
