@@ -9,6 +9,7 @@ import { IAgent } from './types/agent';
 export { startAgent } from './bootstrap';
 export { createRouterManager } from './routes';
 export { AgentOpenAI } from './openai/agent';
+export * from './openai/function';
 
 export * from './handlers';
 export * from './types';
