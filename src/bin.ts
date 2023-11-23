@@ -40,6 +40,7 @@ startAgent(client, {
 });
 
 /*
+Function Schema to OpenAI Assistant
 {
   "name": "random-number",
   "description": "Generate a random number between the given range",

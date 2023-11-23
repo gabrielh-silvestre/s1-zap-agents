@@ -3,15 +3,15 @@
 ## Install
 
 ```bash
-bun add s1-agents whatsapp-web.js
+bun add s1-zap-agents whatsapp-web.js
 ```
 
 ```bash
-npm i s1-agents whatsapp-web.js
+npm i s1-zap-agents whatsapp-web.js
 ```
 
 ```bash
-yarn add s1-agents whatsapp-web.js
+yarn add s1-zap-agents whatsapp-web.js
 ```
 
 ## Local Setup
@@ -21,11 +21,11 @@ yarn add s1-agents whatsapp-web.js
 ```bash
 docker build --build-arg OPENAI_API_KEY=$OPENAI_API_KEY \
              --build-arg AGENT_ID=<your_agent_id> \
-             -t cheap-gpt:latest .
+             -t s1-zap-agent:latest .
 ```
 
 ```bash
-docker run -it --rm cheap-gpt:latest
+docker run -it --rm s1-zap-agent:latest
 ```
 
 ### [Bun](https://bun.sh)

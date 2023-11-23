@@ -1,11 +1,11 @@
 {
-  "name": "s1-agents",
+  "name": "s1-zap-agents",
   "module": "src/index.ts",
   "main": "dist/index.js",
   "type": "module",
   "bin": "src/bin.ts",
   "author": "Gabriel Silvestre <gabriel.h.silvestre11@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "files": [
     "dist"
   ],
@@ -14,9 +14,9 @@
     "url": "git@github.com:gabrielh-silvestre/s1-agents.git"
   },
   "bugs": {
-    "url": "git@github.com:gabrielh-silvestre/s1-agents/issues"
+    "url": "https://github.com/gabrielh-silvestre/s1-agents/issues"
   },
-  "homepage": "git@github.com:gabrielh-silvestre/s1-agents#readme",
+  "homepage": "https://github.com/gabrielh-silvestre/s1-agents#s1-agent",
   "version": "1.2.5",
   "scripts": {
     "start": "bun src/bin.ts",
