@@ -12,6 +12,6 @@ module.exports = {
       strict: true,
     },
   ],
-  external: ['whatsapp-web.js'],
+  external: ['whatsapp-web.js', 's1-agents'],
   plugins: [typescript()],
 };
