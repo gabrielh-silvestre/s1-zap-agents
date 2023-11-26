@@ -1,7 +1,6 @@
 import { Chat, Message, MessageMedia } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
-import { Response } from 'openai/core.mjs';
 
 export class SpeechHandler extends BaseHandler {
   shouldExecute(msg: Message): boolean {

@@ -4,17 +4,17 @@ import {
   TranscribeHandler,
   TextHandler,
 } from './handlers';
-import { IAgent } from './types/agent';
+import { RouteHandlerOpts } from './types/routes';
+import { ZapAgent } from './openai/agent';
 
 export { startAgent } from './bootstrap';
 export { createRouterManager } from './routes';
-export { AgentOpenAI } from './openai/agent';
-export { AgentFunction } from './openai/function';
+export { ZapAgent } from './openai/agent';
 
 export * from './handlers';
 export * from './types';
 
-export const defaultHandlers = (agent: IAgent) => [
+export const defaultHandlers = (agent: ZapAgent): RouteHandlerOpts[] => [
   { handler: AudioHandler, opts: { agent } },
   {
     handler: SpeechHandler,

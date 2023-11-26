@@ -177,3 +177,6 @@ dist
 
 # WhatsApp
 .wwebjs*
+
+function-schemas/
+function-schemas/*

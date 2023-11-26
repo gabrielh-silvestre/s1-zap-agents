@@ -1,6 +1,6 @@
-import { IAgent } from './agent';
+import { ZapAgent } from '../openai/agent';
 
 export type HandlerOpts = {
   command?: string | null;
-  agent?: IAgent | null;
+  agent?: ZapAgent | null;
 };
