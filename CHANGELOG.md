@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 0.1.0 (2023-11-26)
+
+
+### Features
+
+* allow gpt to answer audios ([c450fbb](https://github.com/gabrielh-silvestre/s1-agents/commit/c450fbb44b1737692e91cd1bd8149eedcd7137c8))
+* allow gpt to answer with audio ([55ed283](https://github.com/gabrielh-silvestre/s1-agents/commit/55ed283eac071f6b523b1519089fec41b271c48a))
+* change chat completion to Agent thread ([168ec5c](https://github.com/gabrielh-silvestre/s1-agents/commit/168ec5c62619ca04ed61454b3098cb014d8cd158))
+* connect whatsapp and chat gpt ([24c6f60](https://github.com/gabrielh-silvestre/s1-agents/commit/24c6f602d0a23d437e6b9bbeb4cb591160d66af5))
+* create first prompt ([ba95182](https://github.com/gabrielh-silvestre/s1-agents/commit/ba95182b3844e98860138db3d8eeb392463d7ee7))
+* create more generic handlers ([b4d337c](https://github.com/gabrielh-silvestre/s1-agents/commit/b4d337c6661bef53c53e64f1bf7202497b036b41))
+* define default handlers to decrease start time ([32f059b](https://github.com/gabrielh-silvestre/s1-agents/commit/32f059bf2e61c272895eab5eeca8abd892bc12fe))
+* dockerize ([2dd2370](https://github.com/gabrielh-silvestre/s1-agents/commit/2dd237094cba40a4b6980503a682be131705ebad))
+* **openai:** allow inject functions into AgentOpenAI ([b335bd6](https://github.com/gabrielh-silvestre/s1-agents/commit/b335bd68a38369ee480bacc6aa590b650769194a))
+* split logic ([4767878](https://github.com/gabrielh-silvestre/s1-agents/commit/47678789e4db41f14b18dad537f9a4d538911e15))
+* transform into lib ([e0b1d08](https://github.com/gabrielh-silvestre/s1-agents/commit/e0b1d0816cc91e8f9cc3c8ed053b010f3c3ec96e))
+
+
+### Bug Fixes
+
+* add needed external dependencies into rollup build ([82aaf4e](https://github.com/gabrielh-silvestre/s1-agents/commit/82aaf4e0331d7348d7278cf8ca3ef1e135b1c53b))
+* adjust circular dependency on handlers ([738db2d](https://github.com/gabrielh-silvestre/s1-agents/commit/738db2da3cfb67ef2abcb6b24e3d38c1e4dc6d0f))
+* adjust publish flux ([07dadc4](https://github.com/gabrielh-silvestre/s1-agents/commit/07dadc4427b0f9e35b3a4698e0d2ca8717612d87))
+* adjust route order on manager ([7edd3eb](https://github.com/gabrielh-silvestre/s1-agents/commit/7edd3eb67490b9981f6fe1320887a447242b4cf2))
+* **AudioHandler:** adjust exec condition ([ba23d88](https://github.com/gabrielh-silvestre/s1-agents/commit/ba23d88b61f70a4dac0fd3b9442d6d94e6f71824))
+* export missing function on entry point ([df16fc6](https://github.com/gabrielh-silvestre/s1-agents/commit/df16fc64502b73b73cb29581ede03fb2945a5fb6))
+* import statements and update method signatures ([19131cd](https://github.com/gabrielh-silvestre/s1-agents/commit/19131cd4f20a185b254f996e37dabfa1aad37040))
+* install typescript to build correctly ([3b7db24](https://github.com/gabrielh-silvestre/s1-agents/commit/3b7db2438a1bf01577b7233776e1b60b4da94bfa))
+* only leave whatsapp-web package as external ([3eecc1f](https://github.com/gabrielh-silvestre/s1-agents/commit/3eecc1f14ddc488304ac3f42f0f70e22567cb939))
+* remove ky, use node-fetch again ([acca80e](https://github.com/gabrielh-silvestre/s1-agents/commit/acca80ecbea5474c3ca2861a199bb734a5b05170))
+* setup rollup ([751f0d7](https://github.com/gabrielh-silvestre/s1-agents/commit/751f0d72dd53e8abc69b6a37d0936fdb47c2f619))
+* update Dockerfile to package structure ([13dd4ca](https://github.com/gabrielh-silvestre/s1-agents/commit/13dd4cab7a3d601eb0df79bbe374b2872cef46c7))
+
 ### [1.2.6](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.5...v1.2.6) (2023-11-23)
 
 ### [1.2.5](https://github.com/gabrielh-silvestre/s1-agents/compare/v1.2.4...v1.2.5) (2023-11-21)
