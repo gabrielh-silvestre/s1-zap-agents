@@ -6,6 +6,7 @@ import {
 } from './handlers';
 import { RouteHandlerOpts } from './types/routes';
 import { ZapAgent } from './openai/agent';
+import { ClearHandler } from './handlers/clear';
 
 export { startAgent } from './bootstrap';
 export { createRouterManager } from './routes';
@@ -27,5 +28,9 @@ export const defaultHandlers = (agent: ZapAgent): RouteHandlerOpts[] => [
   {
     handler: TextHandler,
     opts: { agent, command: '/gpt' },
+  },
+  {
+    handler: ClearHandler,
+    opts: { agent, command: '/clear' },
   },
 ];
