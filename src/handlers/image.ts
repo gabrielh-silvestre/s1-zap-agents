@@ -18,6 +18,7 @@ export class ImageHandler extends BaseHandler {
       const media = await msg.downloadMedia();
       const buffer = Buffer.from(media.data, 'base64');
 
+      /* Generator Example
       const streamResponses = this.agent.genChatImage(msg.body, {
         image: buffer,
         mimetype: media.mimetype,
@@ -25,7 +26,15 @@ export class ImageHandler extends BaseHandler {
       for await (const res of streamResponses) {
         if (!res) continue;
         await msg.reply(this.formatAnswer(res));
-      }
+      } */
+
+      const response = await this.agent.chatImage(msg.body, {
+        image: buffer,
+        mimetype: media.mimetype,
+      });
+      if (!response) return false;
+
+      await msg.reply(this.formatAnswer(response));
 
       return true;
     } catch (error: any) {

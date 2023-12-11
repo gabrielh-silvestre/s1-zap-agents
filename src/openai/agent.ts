@@ -121,10 +121,11 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
 
     for await (const chunk of stream) {
       const finishReason = chunk.choices[0]?.finish_reason;
-      if (finishReason === 'stop' || finishReason === 'length') {
+      if (finishReason !== null && finishReason !== undefined) {
         const responseHasContent = response.trim().length > 0;
         if (responseHasContent) yield response.trim();
 
+        response = '';
         break;
       }
 
@@ -140,7 +141,7 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
       }
     }
 
-    yield response.trim();
+    if (response.trim().length > 0) yield response.trim();
   }
 
   private async completeChat(
@@ -149,7 +150,13 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
     opts: CompleteChatOptions = {}
   ) {
     const stream = opts.stream ?? this._chat.stream;
-    const model = opts.model ?? this._chat.model;
+
+    const hasAnyImg = this._currChat.some(
+      (msg) => typeof msg.content === 'object'
+    );
+    const model = hasAnyImg
+      ? 'gpt-4-vision-preview'
+      : opts.model ?? this._chat.model;
 
     const prevMessages = chatHistory ?? this._currChat;
     return this.openai.chat.completions.create({
@@ -187,8 +194,6 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
     for await (const chunk of this.proccessStream(stream)) {
       yield chunk;
     }
-
-    this._currChat.push(newMsg);
   }
 
   async *genChat(text: string, chatHistory?: ChatCompletionMessageParam[]) {
@@ -226,8 +231,10 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
       maxTokens: MAX_GPT_4_VISION_TOKENS,
     })) as ChatCompletion;
 
-    this._currChat.push(newMsg);
-    return response.choices[0]?.message?.content;
+    return response.choices[0]?.message?.content?.replace(
+      this._prompt.breakLineSymbol,
+      '\n'
+    );
   }
 
   async chat(text: string, chatHistory?: ChatCompletionMessageParam[]) {
@@ -241,6 +248,9 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
     )) as ChatCompletion;
 
     this._currChat.push(newMsg);
-    return response.choices[0]?.message?.content;
+    return response.choices[0]?.message?.content?.replace(
+      this._prompt.breakLineSymbol,
+      '\n'
+    );
   }
 }

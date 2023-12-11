@@ -43,6 +43,17 @@ export abstract class BaseHandler {
     return messages;
   }
 
+  protected async startExec(msg: Message): Promise<void> {
+    await msg.react('👀');
+  }
+
+  protected async catchExec(msg: Message, error: Error): Promise<void> {
+    await msg.react('❌');
+
+    const errorMsg = error.message ?? 'FATAL ERROR';
+    await msg.reply(`Error: ${errorMsg}\nSend a ticket`);
+  }
+
   protected formatAnswer(answer: string): string {
     return `${GPT_MSG_IDENTIFIER}\n${answer.trim()}`;
   }
@@ -58,22 +69,32 @@ export abstract class BaseHandler {
   }
 
   async execute(message: Message): Promise<boolean> {
-    const content =
-      message.body && this.command
-        ? message.body.replace(this.command, '').trim()
-        : message.body;
-
+    console.log(`[${this.name}] Executing...`);
     const chat = await message.getChat();
 
-    let response: boolean | null = null;
-    response ??= await this.handle(chat, message);
-    response ??= await this.answer(chat, content);
+    try {
+      await this.startExec(message);
 
-    if (response === null) {
-      await chat.sendMessage('No response, unexpected error');
+      const content =
+        message.body && this.command
+          ? message.body.replace(this.command, '').trim()
+          : message.body;
+
+      let response: boolean | null = null;
+      response ??= await this.handle(chat, message);
+      response ??= await this.answer(chat, content);
+
+      if (response === null) {
+        await chat.sendMessage('No response, unexpected error');
+        return false;
+      }
+
+      console.log(`[${this.name}]`, response ? 'OK' : 'FAIL');
+      return response;
+    } catch (error: any) {
+      console.error(error);
+      await this.catchExec(message, error);
       return false;
     }
-
-    return response;
   }
 }

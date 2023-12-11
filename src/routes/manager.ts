@@ -17,8 +17,6 @@ export class RouteManager {
         for (const handler of handlers) {
           const shouldExecute = handler.shouldExecute(msg);
           if (shouldExecute) {
-            console.log(`Executing ${handler.name} handler`)
-
             await handler.execute(msg);
             break;
           }

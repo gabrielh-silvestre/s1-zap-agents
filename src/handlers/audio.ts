@@ -24,10 +24,16 @@ export class AudioHandler extends BaseHandler {
       const transcription = await this.agent?.transcriptAudio(buffer);
       if (!transcription) return false;
 
+      /* Generator Example
       for await (const res of this.agent?.genChat(transcription)) {
         if (!res) continue;
         await msg.reply(this.formatAnswer(res));
-      }
+      } */
+
+      const res = await this.agent?.chat(transcription);
+      if (!res) return false;
+
+      await msg.reply(this.formatAnswer(res));
 
       return true;
     } catch (error: any) {
