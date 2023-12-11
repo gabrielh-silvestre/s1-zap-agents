@@ -17,9 +17,9 @@ export const DEFAULT_DIRECTIVES = (
   breakLineSymbol: string = BREAK_LINE_SYMBOL
 ) => [
   `Use "${breakLineSymbol}" to break the lines`,
-  `Do not use "." to end a sentence, instead use "${breakLineSymbol}"`,
   `Do not break lines inside code blocks with "${breakLineSymbol}", use "\n" instead`,
   `Ensure that all code blocks are inside a markdown code block (\`\`\`code\`\`\`)`,
   `Do not use "${breakLineSymbol}" inside code blocks`,
   `Use "${breakLineSymbol}" instead of "." to end a sentence`,
+  `When listing items, use "\n" to break lines. Ex: \n- Item 1\n- Item 2`,
 ];

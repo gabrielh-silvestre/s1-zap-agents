@@ -140,7 +140,7 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
       }
     }
 
-    return response.trim();
+    yield response.trim();
   }
 
   private async completeChat(
