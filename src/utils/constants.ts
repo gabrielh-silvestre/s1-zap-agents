@@ -8,6 +8,8 @@ export const BREAK_LINE_REGEX = (
   symbol: string = BREAK_LINE_SYMBOL
 ) => new RegExp(symbol).test(line);
 
+export const MAX_GPT_4_VISION_TOKENS = 4096;
+
 export const DEFAULT_PROMPT =
   'You are helpfull assistant that helps people with their problems by WhatsApp.';
 

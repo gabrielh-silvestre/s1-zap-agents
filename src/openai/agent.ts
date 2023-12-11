@@ -1,19 +1,33 @@
 import fetch from 'node-fetch';
 import { AgentOpenAI } from 's1-agents';
 import { toFile } from 'openai';
-import { ChatCompletionMessageParam } from 'openai/resources';
+import {
+  ChatCompletion,
+  ChatCompletionChunk,
+  ChatCompletionMessageParam,
+  ChatCompletionUserMessageParam,
+} from 'openai/resources';
 
-import { PromptOpts, ZapAgentOpts } from '../types/agent';
+import {
+  CompleteChatOptions,
+  CompleteImageOptions,
+  IZapAgent,
+  PromptOpts,
+  ZapAgentOpts,
+} from '../types/agent';
 
 import {
   BREAK_LINE_REGEX,
   BREAK_LINE_SYMBOL,
   DEFAULT_DIRECTIVES,
   DEFAULT_PROMPT,
+  MAX_GPT_4_VISION_TOKENS,
 } from '../utils/constants';
+import { Stream } from 'openai/streaming';
 
-export class ZapAgent extends AgentOpenAI {
+export class ZapAgent extends AgentOpenAI implements IZapAgent {
   private _prompt: PromptOpts;
+  private _chat: CompleteChatOptions;
 
   private _currChat: ChatCompletionMessageParam[] = [];
 
@@ -45,10 +59,18 @@ export class ZapAgent extends AgentOpenAI {
     };
   }
 
+  static buildChatOpts(chat: CompleteChatOptions): CompleteChatOptions {
+    return {
+      stream: chat?.stream ?? false,
+      model: chat?.model ?? 'gpt-4-1106-preview',
+    };
+  }
+
   constructor(opts: ZapAgentOpts) {
     super(opts);
 
     this._prompt = ZapAgent.buildPrompt(opts.prompt);
+    this._chat = ZapAgent.buildChatOpts(opts.chat);
   }
 
   get prompt(): string {
@@ -90,24 +112,16 @@ export class ZapAgent extends AgentOpenAI {
     return response.arrayBuffer();
   }
 
-  async *genChat(text: string, chatHistory?: ChatCompletionMessageParam[]) {
+  private transformImageToBase64(image: Buffer, mimetype: string): string {
+    return `data:${mimetype};base64,${image.toString('base64')}`;
+  }
+
+  private async *proccessStream(stream: Stream<ChatCompletionChunk>) {
     let response: string = '';
 
-    const prevMessages = chatHistory ?? this._currChat;
-    const stream = await this.openai.chat.completions.create({
-      model: 'gpt-4-1106-preview',
-      messages: [
-        { role: 'system', content: this.prompt },
-        ...prevMessages,
-        { role: 'user', content: text },
-      ],
-      stream: true,
-    });
-
-    this._currChat.push({ role: 'user', content: text });
-
     for await (const chunk of stream) {
-      if (chunk.choices[0].finish_reason === 'stop') {
+      const finishReason = chunk.choices[0]?.finish_reason;
+      if (finishReason === 'stop' || finishReason === 'length') {
         const responseHasContent = response.trim().length > 0;
         if (responseHasContent) yield response.trim();
 
@@ -115,7 +129,7 @@ export class ZapAgent extends AgentOpenAI {
       }
 
       const content = chunk.choices[0]?.delta?.content;
-      response += content;
+      if (content) response += content;
 
       const isBreakLine = BREAK_LINE_REGEX(response);
       if (isBreakLine) {
@@ -125,20 +139,108 @@ export class ZapAgent extends AgentOpenAI {
         response = after.join('');
       }
     }
+
+    return response.trim();
   }
 
-  async chat(text: string, chatHistory?: ChatCompletionMessageParam[]) {
+  private async completeChat(
+    newMessage: ChatCompletionUserMessageParam,
+    chatHistory?: ChatCompletionMessageParam[],
+    opts: CompleteChatOptions = {}
+  ) {
+    const stream = opts.stream ?? this._chat.stream;
+    const model = opts.model ?? this._chat.model;
+
     const prevMessages = chatHistory ?? this._currChat;
-    const response = await this.openai.chat.completions.create({
-      model: 'gpt-4-1106-preview',
+    return this.openai.chat.completions.create({
+      model,
+      stream,
+      max_tokens: opts.maxTokens,
       messages: [
         { role: 'system', content: this.prompt },
         ...prevMessages,
-        { role: 'user', content: text },
+        newMessage,
       ],
     });
+  }
 
-    this._currChat.push({ role: 'user', content: text });
+  async *genChatImage(
+    text: string,
+    { image, mimetype }: CompleteImageOptions,
+    chatHistory?: ChatCompletionMessageParam[]
+  ) {
+    const url = this.transformImageToBase64(image, mimetype);
+    const newMsg: ChatCompletionUserMessageParam = {
+      role: 'user',
+      content: [
+        { type: 'image_url', image_url: { url, detail: 'auto' } },
+        { type: 'text', text },
+      ],
+    };
+
+    const stream = (await this.completeChat(newMsg, chatHistory, {
+      stream: true,
+      model: 'gpt-4-vision-preview',
+      maxTokens: MAX_GPT_4_VISION_TOKENS,
+    })) as Stream<ChatCompletionChunk>;
+
+    for await (const chunk of this.proccessStream(stream)) {
+      yield chunk;
+    }
+
+    this._currChat.push(newMsg);
+  }
+
+  async *genChat(text: string, chatHistory?: ChatCompletionMessageParam[]) {
+    const newMsg: ChatCompletionUserMessageParam = {
+      role: 'user',
+      content: text,
+    };
+    const stream = (await this.completeChat(newMsg, chatHistory, {
+      stream: true,
+    })) as Stream<ChatCompletionChunk>;
+
+    for await (const chunk of this.proccessStream(stream)) {
+      yield chunk;
+    }
+
+    this._currChat.push(newMsg);
+  }
+
+  async chatImage(
+    text: string,
+    { image, mimetype }: CompleteImageOptions,
+    chatHistory?: ChatCompletionMessageParam[]
+  ) {
+    const url = this.transformImageToBase64(image, mimetype);
+    const newMsg: ChatCompletionUserMessageParam = {
+      role: 'user',
+      content: [
+        { type: 'image_url', image_url: { url, detail: 'auto' } },
+        { type: 'text', text },
+      ],
+    };
+
+    const response = (await this.completeChat(newMsg, chatHistory, {
+      model: 'gpt-4-vision-preview',
+      maxTokens: MAX_GPT_4_VISION_TOKENS,
+    })) as ChatCompletion;
+
+    this._currChat.push(newMsg);
+    return response.choices[0]?.message?.content;
+  }
+
+  async chat(text: string, chatHistory?: ChatCompletionMessageParam[]) {
+    const newMsg: ChatCompletionUserMessageParam = {
+      role: 'user',
+      content: text,
+    };
+    const response = (await this.completeChat(
+      newMsg,
+      chatHistory
+    )) as ChatCompletion;
+
+    this._currChat.push(newMsg);
     return response.choices[0]?.message?.content;
   }
 }
