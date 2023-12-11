@@ -1,4 +1,16 @@
-export type IAgent = {
+import { AgentOptions } from 's1-agents';
+
+export type PromptOpts = {
+  message: string;
+  directives?: string[];
+  breakLineSymbol?: string;
+};
+
+export type ZapAgentOpts = AgentOptions & {
+  prompt?: PromptOpts;
+};
+
+export type IZapAgent = {
   /**
    * @param {string} media - Base64 string of audio/ogg
    */

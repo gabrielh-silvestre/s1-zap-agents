@@ -2,7 +2,7 @@ import { Chat, Message } from 'whatsapp-web.js';
 
 import { HandlerOpts } from '../types/handlers';
 import { ZapAgent } from '../openai/agent';
-
+import { GPT_MSG_IDENTIFIER } from '../utils/constants';
 
 export abstract class BaseHandler {
   protected command: string | null = null;
@@ -31,6 +31,20 @@ export abstract class BaseHandler {
 
     const isCommandString = typeof this.command === 'string';
     return isCommandString ? msg.body.startsWith(this.command) : false;
+  }
+
+  protected async getChatHistory(
+    msg: Message,
+    limit: number
+  ): Promise<Message[]> {
+    const chat = await msg.getChat();
+    const messages = await chat.fetchMessages({ limit });
+
+    return messages;
+  }
+
+  protected formatAnswer(answer: string): string {
+    return `${GPT_MSG_IDENTIFIER}\n${answer.trim()}`;
   }
 
   abstract shouldExecute(msg: Message): boolean;
