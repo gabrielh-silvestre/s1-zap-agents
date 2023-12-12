@@ -2,7 +2,7 @@ import { Chat, Message, MessageTypes } from 'whatsapp-web.js';
 import { BaseHandler } from './base';
 
 export class ImageHandler extends BaseHandler {
-  shouldExecute(msg: Message): boolean {
+  async shouldExecute(msg: Message): Promise<boolean> {
     if (!msg.fromMe) return false;
 
     const canExecute = this.matchCommand(msg) && this.isImage(msg);

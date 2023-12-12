@@ -94,7 +94,7 @@ describe('[Unit] Tests for TextHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return false if message has media', () => {
@@ -105,7 +105,7 @@ describe('[Unit] Tests for TextHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return false if message has quoted message', () => {
@@ -116,7 +116,7 @@ describe('[Unit] Tests for TextHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return false if message type is not chat', () => {
@@ -127,7 +127,7 @@ describe('[Unit] Tests for TextHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return true if message is from me and has no media', () => {
@@ -139,7 +139,7 @@ describe('[Unit] Tests for TextHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(true);
+      expect(act()).resolves.toBe(true);
     });
   });
 

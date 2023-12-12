@@ -4,7 +4,7 @@ import { mockWppChat, mockWppMessage } from '../../mocks';
 import { Message } from 'whatsapp-web.js';
 
 export class BaseHandlerImp extends BaseHandler {
-  shouldExecute(msg: Message): boolean {
+  async shouldExecute(msg: Message): Promise<boolean> {
     return this.matchCommand(msg);
   }
 }
@@ -51,7 +51,7 @@ describe('[Unit] Test for BaseHandler', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return true if message starts with command', () => {
@@ -62,7 +62,7 @@ describe('[Unit] Test for BaseHandler', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(true);
+      expect(act()).resolves.toBe(true);
     });
   });
 

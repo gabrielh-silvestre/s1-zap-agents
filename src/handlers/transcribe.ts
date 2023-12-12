@@ -3,7 +3,7 @@ import { Chat, Message } from 'whatsapp-web.js';
 import { BaseHandler } from './base';
 
 export class TranscribeHandler extends BaseHandler {
-  shouldExecute(msg: Message): boolean {
+  async shouldExecute(msg: Message): Promise<boolean> {
     if (!msg.fromMe) return false;
 
     const canExecute =

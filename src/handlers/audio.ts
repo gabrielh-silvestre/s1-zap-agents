@@ -5,7 +5,7 @@ import { BaseHandler } from './base';
 export class AudioHandler extends BaseHandler {
   name = 'AudioRoute';
 
-  shouldExecute(message: Message): boolean {
+  async shouldExecute(message: Message): Promise<boolean> {
     if (!message.fromMe) return false;
 
     const canExecute = this.matchCommand(message) && this.isAudio(message);

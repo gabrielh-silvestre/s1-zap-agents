@@ -58,7 +58,7 @@ export abstract class BaseHandler {
     return `${GPT_MSG_IDENTIFIER}\n${answer.trim()}`;
   }
 
-  abstract shouldExecute(msg: Message): boolean;
+  abstract shouldExecute(msg: Message): Promise<boolean>;
 
   async answer(chat: Chat, msg: string): Promise<boolean | null> {
     return null;

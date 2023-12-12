@@ -76,7 +76,7 @@ describe('[Unit] Tests for AudioHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return false if message is not from me', () => {
@@ -89,7 +89,7 @@ describe('[Unit] Tests for AudioHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(false);
+      expect(act()).resolves.toBe(false);
     });
 
     it('should return true if message is audio', () => {
@@ -102,7 +102,7 @@ describe('[Unit] Tests for AudioHandler (default behavior)', () => {
       const act = () => handler.shouldExecute(mockedMessage);
 
       // Assert
-      expect(act()).toBe(true);
+      expect(act()).resolves.toBe(true);
     });
   });
 

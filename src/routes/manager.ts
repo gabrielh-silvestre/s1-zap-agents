@@ -15,7 +15,7 @@ export class RouteManager {
         if (!msg.fromMe) return; // Only handle messages from the "host" account
 
         for (const handler of handlers) {
-          const shouldExecute = handler.shouldExecute(msg);
+          const shouldExecute = await handler.shouldExecute(msg);
           if (shouldExecute) {
             await handler.execute(msg);
             break;
