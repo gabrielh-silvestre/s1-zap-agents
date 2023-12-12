@@ -22,6 +22,7 @@ import {
   DEFAULT_DIRECTIVES,
   DEFAULT_PROMPT,
   MAX_GPT_4_VISION_TOKENS,
+  STRICT_DIRECTIVE,
 } from '../utils/constants';
 import { Stream } from 'openai/streaming';
 
@@ -36,7 +37,7 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
       .map((directive) => `* IMPORTANT ${directive}`)
       .join('\n');
 
-    return `# STRICT DIRECTIVES\n${list}`;
+    return `${STRICT_DIRECTIVE}\n${list}`;
   }
 
   /**
@@ -75,6 +76,12 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
 
   get prompt(): string {
     return this._prompt.message;
+  }
+
+  get chatHistory(): string[] {
+    return this._currChat
+      .map((msg) => msg.content)
+      .filter((content): content is string => typeof content === 'string');
   }
 
   clearChat() {
