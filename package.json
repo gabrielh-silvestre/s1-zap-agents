@@ -40,7 +40,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "blob": "^0.1.0",
     "node-fetch": "^3.3.2",
     "openai": "^4.20.0",
     "puppeteer": "^21.5.2",
