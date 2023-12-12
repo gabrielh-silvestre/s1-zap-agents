@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.1.1...v0.2.0) (2023-12-12)
+
+
+### Features
+
+* add ClearHandler for clearing chat messages ([e121c4b](https://github.com/gabrielh-silvestre/s1-agents/commit/e121c4bac0ca001088b2872caf751bd2e198b2cd))
+* add image handling functionality ([8b00b7f](https://github.com/gabrielh-silvestre/s1-agents/commit/8b00b7f6cfa5ca4f816d6a7b7c340d7482430c1f))
+* change chat generation method ([5005055](https://github.com/gabrielh-silvestre/s1-agents/commit/5005055423b8a9724741fcc4668de99a2a306825))
+
+
+### Bug Fixes
+
+* use yield on proccessStream ([85225e3](https://github.com/gabrielh-silvestre/s1-agents/commit/85225e38ac16420d5a5b7027c7a5089da4dd80ea))
+
 ### [0.1.1](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.1.0...v0.1.1) (2023-11-26)
 
 ## 0.1.0 (2023-11-26)
