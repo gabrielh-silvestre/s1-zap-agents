@@ -10,6 +10,16 @@ import OpenAI from 'openai';
 export const mockAgent = () =>
   ({
     complet: mock(async () => '[MOCKED] GPT response'),
+    transcriptAudio: mock(async () => '[MOCKED] Transcript'),
+    transcriptText: mock(async () => new ArrayBuffer(1)),
+    chat: mock(async () => '[MOCKED] Chat'),
+    chatImage: mock(async () => '[MOCKED] Chat'),
+    genChat: mock(async function* () {
+      yield '[MOCKED] Chat';
+    }),
+    genChatImage: mock(async function* () {
+      yield '[MOCKED] Chat';
+    }),
   } as unknown as IZapAgent);
 
 export const mockWppChat = () =>
@@ -17,12 +27,18 @@ export const mockWppChat = () =>
     sendMessage: mock(async () => ({} as Message)),
   } as unknown as Chat);
 
+export const mockWppMediaMessage = () =>
+  ({
+    data: 'test',
+  } as unknown as Message);
+
 export const mockWppMessage = () =>
   ({
     body: '.test-mock MOCKED',
     getChat: mock(async () => mockWppChat()),
     react: mock(async () => ({})),
     reply: mock(async () => ({})),
+    downloadMedia: mock(async () => mockWppMediaMessage()),
   } as unknown as Message);
 
 export const mockTranscriptionResponse = () =>
