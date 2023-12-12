@@ -3,3 +3,4 @@ export * from './speech';
 export * from './base';
 export * from './transcribe';
 export * from './text';
+export * from './image';

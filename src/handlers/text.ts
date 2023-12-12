@@ -21,10 +21,16 @@ export class TextHandler extends BaseHandler {
 
   async handle(_: Chat, msg: Message): Promise<boolean | null> {
     try {
-      const response = await this.agent?.complet(this.getMsgBody(msg));
-      if (!response) return false;
+      /* Generator Example
+      for await (const res of this.agent.genChat(this.getMsgBody(msg))) {
+        if (!res) continue;
+        await msg.reply(this.formatAnswer(res));
+      } */
 
-      await msg.reply(response);
+      const res = await this.agent.chat(this.getMsgBody(msg));
+      if (!res) return false;
+
+      await msg.reply(this.formatAnswer(res));
 
       return true;
     } catch (error: any) {

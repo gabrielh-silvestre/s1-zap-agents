@@ -23,7 +23,7 @@ type RandomNumberParameters = {
 };
 
 // Example Function
-export class RandomNumber extends AgentFunction<RandomNumberParameters> {
+export class RandomNumber extends AgentFunction {
   constructor() {
     super({
       name: 'random-number',
