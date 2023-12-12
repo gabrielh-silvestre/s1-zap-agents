@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, mock } from 'bun:test';
+import { Message } from 'whatsapp-web.js';
 
 import { AudioHandler } from '../../../src/handlers/audio';
-import { Message } from 'whatsapp-web.js';
 import { mockAgent, mockWppChat, mockWppMessage } from '../../mocks';
 
 class AudioHandlerImp extends AudioHandler {
@@ -147,9 +147,7 @@ describe('[Unit] Tests for AudioHandler (default behavior)', () => {
 
     it('should return null if any error occurs', async () => {
       // Arrange
-      mockedAgent.transcriptAudio = mock(async () => {
-        throw new Error('test');
-      });
+      mockedAgent.transcriptAudio.mockRejectedValue(new Error('test'));
 
       // Act
       const act = () => handler.handle(mockedChat, mockedMessage);

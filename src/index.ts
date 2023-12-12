@@ -3,11 +3,11 @@ import {
   SpeechHandler,
   TranscribeHandler,
   TextHandler,
+  ImageHandler,
 } from './handlers';
 import { RouteHandlerOpts } from './types/routes';
 import { ZapAgent } from './openai/agent';
 import { ClearHandler } from './handlers/clear';
-import { ImageHandler } from './handlers/image';
 
 export { startAgent } from './bootstrap';
 export { createRouterManager } from './routes';

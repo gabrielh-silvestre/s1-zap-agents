@@ -4,8 +4,9 @@ import { IZapAgent } from '../../src/types/agent';
 import { ChatCompletion, ChatCompletionChunk } from 'openai/resources';
 import { Transcription } from 'openai/resources/audio/transcriptions';
 import { Response } from 'openai/_shims/auto/types';
-import { Stream } from 'openai/streaming';
 import OpenAI from 'openai';
+
+export const MOCKED_COMMAND = '.test-mock';
 
 export const mockAgent = () =>
   ({
@@ -34,7 +35,7 @@ export const mockWppMediaMessage = () =>
 
 export const mockWppMessage = () =>
   ({
-    body: '.test-mock MOCKED',
+    body: `${MOCKED_COMMAND} MOCKED`,
     getChat: mock(async () => mockWppChat()),
     react: mock(async () => ({})),
     reply: mock(async () => ({})),
