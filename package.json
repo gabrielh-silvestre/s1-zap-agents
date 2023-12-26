@@ -17,7 +17,7 @@
     "url": "https://github.com/gabrielh-silvestre/s1-agents/issues"
   },
   "homepage": "https://github.com/gabrielh-silvestre/s1-agents#s1-agent",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "scripts": {
     "start": "bun src/bin.ts",
     "build": "rollup -c",

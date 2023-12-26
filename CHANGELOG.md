@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.2.3...v0.2.4) (2023-12-26)
+
+
+### Bug Fixes
+
+* only control execution on handler ([5cae649](https://github.com/gabrielh-silvestre/s1-agents/commit/5cae649f24ee4930a7b24de3ccede5d5b80a9a36))
+
 ### [0.2.3](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.2.2...v0.2.3) (2023-12-26)
 
 ### [0.2.2](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.2.1...v0.2.2) (2023-12-12)
