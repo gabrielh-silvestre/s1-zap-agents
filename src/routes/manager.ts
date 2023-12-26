@@ -12,8 +12,6 @@ export class RouteManager {
 
     for (const [event, handlers] of this.hub) {
       client.on(event, async (msg) => {
-        if (!msg.fromMe) return; // Only handle messages from the "host" account
-
         for (const handler of handlers) {
           const shouldExecute = await handler.shouldExecute(msg);
           if (shouldExecute) {
