@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.2.4...v0.3.0) (2023-12-27)
+
+
+### Features
+
+* allow handlers to have multiple agents ([f2701f2](https://github.com/gabrielh-silvestre/s1-agents/commit/f2701f2235b313193eb901e42a1dd62b57e1545f))
+
 ### [0.2.4](https://github.com/gabrielh-silvestre/s1-agents/compare/v0.2.3...v0.2.4) (2023-12-26)
 
 
