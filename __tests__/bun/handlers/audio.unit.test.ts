@@ -1,17 +1,10 @@
 import { beforeEach, describe, expect, it, mock } from 'bun:test';
-import { Message } from 'whatsapp-web.js';
 
 import { AudioHandler } from '../../../src/handlers/audio';
 import { mockAgent, mockWppChat, mockWppMessage } from '../../mocks';
 
-class AudioHandlerImp extends AudioHandler {
-  isAudio(msg: Message): boolean {
-    return super.isAudio(msg);
-  }
-}
-
 describe('[Unit] Tests for AudioHandler (default behavior)', () => {
-  let handler: AudioHandlerImp;
+  let handler: AudioHandler;
 
   let mockedMessage: any;
   let mockedChat: any;
@@ -22,48 +15,11 @@ describe('[Unit] Tests for AudioHandler (default behavior)', () => {
     mockedChat = mockWppChat();
     mockedAgent = mockAgent();
 
-    handler = new AudioHandlerImp({ agent: mockedAgent });
+    handler = new AudioHandler({ agent: mockedAgent });
   });
 
   it('should be defined', () => {
     expect(handler).toBeDefined();
-  });
-
-  describe('.isAudio', () => {
-    it('should return false if message has no media', () => {
-      // Arrange
-      mockedMessage.hasMedia = false;
-
-      // Act
-      const act = () => handler.isAudio(mockedMessage);
-
-      // Assert
-      expect(act()).toBe(false);
-    });
-
-    it('should return false if message is not audio', () => {
-      // Arrange
-      mockedMessage.hasMedia = true;
-      mockedMessage.type = 'image';
-
-      // Act
-      const act = () => handler.isAudio(mockedMessage);
-
-      // Assert
-      expect(act()).toBe(false);
-    });
-
-    it('should return true if message is audio', () => {
-      // Arrange
-      mockedMessage.hasMedia = true;
-      mockedMessage.type = 'ptt';
-
-      // Act
-      const act = () => handler.isAudio(mockedMessage);
-
-      // Assert
-      expect(act()).toBe(true);
-    });
   });
 
   describe('.shouldExecute', () => {

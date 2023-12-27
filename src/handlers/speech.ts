@@ -12,11 +12,9 @@ export class SpeechHandler extends BaseHandler {
     return canExecute;
   }
 
-  async handle(_: Chat, msg: Message): Promise<boolean | null> {
+  async handleQuoted(_: Chat, msg: Message): Promise<boolean | null> {
     try {
-      const quote = await msg.getQuotedMessage();
-
-      const response = await this.agent?.transcriptText(quote.body);
+      const response = await this.agent?.transcriptText(msg.body);
       if (!response) return false;
 
       const base64 = Buffer.from(response).toString('base64');

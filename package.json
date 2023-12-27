@@ -2,7 +2,6 @@
   "name": "s1-zap-agents",
   "module": "src/index.ts",
   "main": "dist/index.js",
-  "type": "module",
   "bin": "src/bin.ts",
   "author": "Gabriel Silvestre <gabriel.h.silvestre11@gmail.com>",
   "license": "MIT",
@@ -20,7 +19,7 @@
   "version": "0.2.4",
   "scripts": {
     "start": "bun src/bin.ts",
-    "build": "rollup -c",
+    "build": "rollup -c rollup.config.js",
     "prepublish": "bun run build",
     "prepublishOnly": "bun run test",
     "test": "bun test",

@@ -1,6 +1,7 @@
 import { Chat, Message } from 'whatsapp-web.js';
 
 import { BaseHandler } from './base';
+import { isAudioMsg } from '../utils/helpers';
 
 export class AudioHandler extends BaseHandler {
   name = 'AudioRoute';
@@ -8,12 +9,8 @@ export class AudioHandler extends BaseHandler {
   async shouldExecute(message: Message): Promise<boolean> {
     if (!message.fromMe) return false;
 
-    const canExecute = this.matchCommand(message) && this.isAudio(message);
+    const canExecute = this.matchCommand(message) && isAudioMsg(message);
     return canExecute;
-  }
-
-  protected isAudio(msg: Message): boolean {
-    return msg.hasMedia && msg.type === 'ptt';
   }
 
   async handle(_: Chat, msg: Message): Promise<boolean | null> {
