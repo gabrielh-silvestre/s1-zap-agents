@@ -6,16 +6,16 @@ export class TranscribeHandler extends BaseHandler {
   async shouldExecute(msg: Message): Promise<boolean> {
     if (!msg.fromMe) return false;
 
-    const canExecute =
-      this.matchCommand(msg) &&
-      (msg.hasMedia || msg.hasQuotedMsg || msg.type === 'chat');
+    if (!msg.hasQuotedMsg) return false;
+    const quotedMsg = await msg.getQuotedMessage();
+
+    const canExecute = this.matchCommand(msg) && (quotedMsg.hasMedia || msg.type === 'chat');
     return canExecute;
   }
 
-  async handle(_: Chat, msg: Message): Promise<boolean | null> {
+  async handleQuoted(_: Chat, msg: Message): Promise<boolean | null> {
     try {
-      const quote = await msg.getQuotedMessage();
-      const audio = await quote.downloadMedia();
+      const audio = await msg.downloadMedia();
       const buffer = Buffer.from(audio.data, 'base64');
 
       const response = await this.agent?.transcriptAudio(buffer);
