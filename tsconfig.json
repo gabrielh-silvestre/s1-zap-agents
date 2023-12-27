@@ -10,10 +10,11 @@
     "moduleResolution": "Node",
     "moduleDetection": "force",
     "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "types": [
       "bun-types" // add Bun global
     ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "rollup.config.cjs"]
+  "include": ["src/**/*", "__tests__/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
