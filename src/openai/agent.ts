@@ -196,7 +196,7 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
       stream: true,
       model: 'gpt-4-vision-preview',
       maxTokens: MAX_GPT_4_VISION_TOKENS,
-    })) as Stream<ChatCompletionChunk>;
+    })) as unknown as Stream<ChatCompletionChunk>;
 
     for await (const chunk of this.proccessStream(stream)) {
       yield chunk;
@@ -210,7 +210,7 @@ export class ZapAgent extends AgentOpenAI implements IZapAgent {
     };
     const stream = (await this.completeChat(newMsg, chatHistory, {
       stream: true,
-    })) as Stream<ChatCompletionChunk>;
+    })) as unknown as Stream<ChatCompletionChunk>;
 
     for await (const chunk of this.proccessStream(stream)) {
       yield chunk;

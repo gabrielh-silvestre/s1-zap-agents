@@ -1,7 +1,13 @@
-import { afterEach, beforeAll, jest } from 'bun:test';
+import { afterEach, beforeEach, jest, mock } from 'bun:test';
+import OpenAI from 'openai';
 
-beforeAll(() => {
-  jest.restoreAllMocks();
+import { mockOpenAI } from '../mocks';
+
+beforeEach(() => {
+  mock.module('openai', () => ({
+    ...OpenAI,
+    OpenAI: mock(() => mockOpenAI()),
+  }));
 });
 
 afterEach(() => {

@@ -1,4 +1,4 @@
-import { Mock, beforeEach, describe, expect, it, spyOn } from 'bun:test';
+import { Mock, beforeEach, describe, expect, it, mock, spyOn } from 'bun:test';
 
 import { ZapAgent } from '../../../src/openai/agent';
 import { mockOpenAI } from '../../mocks';
@@ -54,18 +54,21 @@ class ZapAgentImp extends ZapAgent {
 describe('[Unit] Test for ZapAgent', () => {
   let agent: ZapAgent;
 
-  let mockeOpenAI: any;
   let mockedTranscription: any;
   let mockedSpeech: any;
   let mockedChat: any;
 
   beforeEach(() => {
-    mockeOpenAI = mockOpenAI();
+    const mockeOpenAI = mockOpenAI();
+    agent = new ZapAgentImp({ agentId: '123' }) as any;
+
     mockedTranscription = mockeOpenAI.audio.transcriptions.create;
     mockedSpeech = mockeOpenAI.audio.speech.create;
     mockedChat = mockeOpenAI.chat.completions.create;
 
-    agent = new ZapAgentImp({ agentId: '123', openai: mockeOpenAI }) as any;
+    agent.openai.audio.speech.create = mockedSpeech;
+    agent.openai.audio.transcriptions.create = mockedTranscription;
+    agent.openai.chat.completions.create = mockedChat;
   });
 
   it('should be defined', () => {
@@ -118,7 +121,7 @@ describe('[Unit] Test for ZapAgent', () => {
 
     it('should build agent with default values', () => {
       // Act
-      const agent = new ZapAgent({ agentId: '123', openai: mockeOpenAI });
+      const agent = new ZapAgent({ agentId: '123' });
 
       // Assert
       expect(agent.prompt).toBeDefined();
@@ -147,7 +150,6 @@ describe('[Unit] Test for ZapAgent', () => {
       // Act
       const agent = new ZapAgent({
         agentId: '123',
-        openai: mockeOpenAI,
         prompt,
         chat,
       });
@@ -197,6 +199,7 @@ describe('[Unit] Test for ZapAgent', () => {
   describe('.transcriptAudio', () => {
     it('should transcribe audio to text', async () => {
       // Arrange
+      agent.openai.audio.transcriptions.create = mockedTranscription;
       const audio = Buffer.from('test');
 
       // Act
@@ -230,10 +233,10 @@ describe('[Unit] Test for ZapAgent', () => {
 
     beforeEach(() => {
       mockedStreamOpenAI = mockOpenAI('stream');
-      mockedStreamAgent = new ZapAgentImp({
-        agentId: '123',
-        openai: mockedStreamOpenAI,
-      }) as any;
+      mockedStreamAgent = new ZapAgentImp({ agentId: '123' });
+
+      mockedStreamAgent.openai.chat.completions.create =
+        mockedStreamOpenAI.chat.completions.create;
 
       spyTransformImage = spyOn(mockedStreamAgent, 'transformImageToBase64');
       spyCompleteChat = spyOn(mockedStreamAgent, 'completeChat');
