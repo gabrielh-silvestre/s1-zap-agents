@@ -15,6 +15,7 @@ export { ZapAgent } from './openai/agent';
 
 export * from './handlers';
 export * from './types';
+export * from './utils/helpers';
 
 export const defaultHandlers = (agent: ZapAgent): RouteHandlerOpts[] => [
   { handler: AudioHandler, opts: { agent } },
