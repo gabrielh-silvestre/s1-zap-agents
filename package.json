@@ -2,6 +2,7 @@
   "name": "s1-zap-agents",
   "module": "src/index.ts",
   "main": "dist/index.js",
+  "types": "dist/src/index.d.ts",
   "bin": "src/bin.ts",
   "author": "Gabriel Silvestre <gabriel.h.silvestre11@gmail.com>",
   "license": "MIT",
