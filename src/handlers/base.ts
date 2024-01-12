@@ -1,9 +1,11 @@
 import { Chat, Message } from 'whatsapp-web.js';
 
+import { ZapAgentOpts } from '../types/agent';
 import { HandlerOpts, StartAgentMode } from '../types/handlers';
+
 import { ZapAgent } from '../openai/agent';
+
 import { GPT_MSG_IDENTIFIER } from '../utils/constants';
-import { AgentOptions } from 's1-agents';
 
 export abstract class BaseHandler {
   protected command: string | null = null;
@@ -44,7 +46,7 @@ export abstract class BaseHandler {
  * - StartAgentMode.Throw: If the agent already exists, it will throw an error
  */
   protected startAgent(
-    opts: AgentOptions,
+    opts: ZapAgentOpts,
     mode: StartAgentMode = StartAgentMode.Safe,
     id?: string
   ): void {
